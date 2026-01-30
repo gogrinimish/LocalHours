@@ -19,22 +19,18 @@ struct MenuBarView: View {
             }
         }
         .frame(width: 340)
-        .sheet(isPresented: $showStopDialog) {
-            StopTimerSheet(
-                viewModel: viewModel,
-                description: $entryDescription,
-                projectName: $projectName,
-                isPresented: $showStopDialog
-            )
-        }
     }
     
     // MARK: - Main View
     
     private var mainView: some View {
         VStack(spacing: 0) {
-            // Timer section
-            timerSection
+            // Timer section or inline stop form (avoids sheet so menu bar window stays open)
+            if showStopDialog {
+                stopFormInline
+            } else {
+                timerSection
+            }
             
             Divider()
             
@@ -46,6 +42,17 @@ struct MenuBarView: View {
             // Actions
             actionsSection
         }
+    }
+    
+    /// Inline stop-timer form so Save doesn’t dismiss a sheet and close the menu bar window.
+    private var stopFormInline: some View {
+        StopTimerInline(
+            viewModel: viewModel,
+            description: $entryDescription,
+            projectName: $projectName,
+            isPresented: $showStopDialog
+        )
+        .padding()
     }
     
     // MARK: - Timesheet View (Inline)
@@ -568,9 +575,9 @@ struct MenuBarEntryRow: View {
     }
 }
 
-// MARK: - Stop Timer Sheet
+// MARK: - Stop Timer (inline, no sheet — keeps menu bar window open on Save)
 
-struct StopTimerSheet: View {
+struct StopTimerInline: View {
     @ObservedObject var viewModel: TimeTrackingViewModel
     @Binding var description: String
     @Binding var projectName: String
@@ -634,8 +641,6 @@ struct StopTimerSheet: View {
                 .buttonStyle(.borderedProminent)
             }
         }
-        .padding()
-        .frame(width: 350)
     }
 }
 
