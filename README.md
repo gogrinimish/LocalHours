@@ -6,6 +6,16 @@
 
 A cross-platform time tracking application for macOS, iOS, and Android. Track your hours, build timesheets, and email them to approvers with one click.
 
+**Learn more:** [SimpleTimesheet website](https://gogrinimish.github.io/SimpleTimesheet/)
+
+## Screenshots
+
+*Add PNGs to `docs/screenshots/` as `macos-menubar.png`, `ios-timer.png`, and `timesheet-preview.png` to show them below.*
+
+| macOS Menu Bar | iOS Timer | Timesheet Preview |
+|----------------|-----------|-------------------|
+| ![macOS menu bar](docs/screenshots/macos-menubar.png) | ![iOS timer](docs/screenshots/ios-timer.png) | ![Timesheet](docs/screenshots/timesheet-preview.png) |
+
 ## Features
 
 ### Core Functionality
@@ -131,6 +141,25 @@ SimpleTimesheet is designed with privacy in mind:
 - **No account required**: Works entirely offline
 - **Open source**: Full transparency into how your data is handled
 
+## Feedback & Bugs
+
+Found a bug or have a suggestion? Please open an [issue](https://github.com/gogrinimish/SimpleTimesheet/issues). We use issues for:
+
+- **Bug reports** – describe the problem, steps to reproduce, and your environment (OS, app version).
+- **Feature requests** – describe the feature and how you’d use it.
+- **General feedback** – ideas, UX improvements, or documentation fixes.
+
+Check [existing issues](https://github.com/gogrinimish/SimpleTimesheet/issues) first to avoid duplicates.
+
+## Collaborators Wanted
+
+SimpleTimesheet is a solo project today. If you’d like to help shape the next set of features, we’re especially interested in collaborators for:
+
+- **Android & Windows apps** – Extend the app to Android (e.g. via [Skip](https://skip.dev)) and Windows (e.g. Swift on Windows or a separate stack). Experience with cross-platform or native mobile/desktop is a plus.
+- **Multiple projects / timesheets** – Design and implement support for multiple projects or timesheet “workspaces” (e.g. per client, per contract) with clear data model and UI.
+
+If you’re interested, open an issue with the label `collaborator` or `good first project`, or comment on the relevant [roadmap issues](https://github.com/gogrinimish/SimpleTimesheet/issues).
+
 ## Contributing
 
 Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting a pull request.
@@ -144,6 +173,14 @@ Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTIN
 5. Commit: `git commit -m 'Add amazing feature'`
 6. Push: `git push origin feature/amazing-feature`
 7. Open a Pull Request
+
+## Support the Project
+
+If SimpleTimesheet is useful to you, you can support its development:
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/YOUR_USERNAME)
+
+*Replace `YOUR_USERNAME` with your [Buy Me a Coffee](https://www.buymeacoffee.com) username, or use another link (e.g. Ko-fi, GitHub Sponsors).*
 
 ## License
 
