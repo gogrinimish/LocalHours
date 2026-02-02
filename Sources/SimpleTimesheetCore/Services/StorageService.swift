@@ -15,6 +15,10 @@ public protocol StorageServiceProtocol {
     func saveTimeEntries(_ entries: [TimeEntry]) throws
     func loadTimesheets() throws -> [Timesheet]
     func saveTimesheet(_ timesheet: Timesheet) throws
+    /// Returns true if the deterministic period file exists (so macOS and iOS don't both create a backup).
+    func timesheetFileExistsForPeriod(periodStart: Date, periodEnd: Date, timeZone: TimeZone) -> Bool
+    /// Saves a timesheet to the deterministic path for that period (same path on all devices).
+    func saveTimesheetForPeriod(_ timesheet: Timesheet, timeZone: TimeZone) throws
     func getStorageFolderURL() -> URL?
     func isValidStorageFolder(_ path: String) -> Bool
     func setStorageFolder(_ path: String) throws
@@ -188,6 +192,37 @@ public class StorageService: StorageServiceProtocol {
         
         let data = try encoder.encode(timesheet)
         try data.write(to: timesheetURL)
+    }
+    
+    /// Deterministic path for a period so macOS and iOS write the same file (no duplicate backups).
+    private func periodTimesheetURL(periodStart: Date, periodEnd: Date, timeZone: TimeZone) -> URL? {
+        guard let folderURL = storageFolderURL else { return nil }
+        var cal = Calendar.current
+        cal.timeZone = timeZone
+        let startDay = cal.component(.year, from: periodStart) * 10000 + cal.component(.month, from: periodStart) * 100 + cal.component(.day, from: periodStart)
+        let endDay = cal.component(.year, from: periodEnd) * 10000 + cal.component(.month, from: periodEnd) * 100 + cal.component(.day, from: periodEnd)
+        let fileName = "period-\(startDay)_\(endDay).json"
+        return folderURL
+            .appendingPathComponent(timesheetsFolder)
+            .appendingPathComponent(fileName)
+    }
+    
+    public func timesheetFileExistsForPeriod(periodStart: Date, periodEnd: Date, timeZone: TimeZone) -> Bool {
+        guard let url = periodTimesheetURL(periodStart: periodStart, periodEnd: periodEnd, timeZone: timeZone) else {
+            return false
+        }
+        return fileManager.fileExists(atPath: url.path)
+    }
+    
+    public func saveTimesheetForPeriod(_ timesheet: Timesheet, timeZone: TimeZone) throws {
+        guard let folderURL = storageFolderURL else {
+            throw StorageError.noStorageFolder
+        }
+        guard let url = periodTimesheetURL(periodStart: timesheet.periodStart, periodEnd: timesheet.periodEnd, timeZone: timeZone) else {
+            throw StorageError.invalidPath
+        }
+        let data = try encoder.encode(timesheet)
+        try data.write(to: url)
     }
     
     /// Delete a timesheet from storage

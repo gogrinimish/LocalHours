@@ -30,6 +30,7 @@ struct ContentView: View {
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 viewModel.syncFromWidget()
+                viewModel.saveTimesheetForCurrentPeriodIfDue()
             }
         }
         .onChange(of: viewModel.showStopDialogFromWidget) { _, shouldShow in

@@ -126,6 +126,7 @@ public final class TimeTrackingViewModel: ObservableObject {
             configuration.storageFolder = path
             let loaded = try storageService.loadTimeEntries()
             applyLoadedEntries(loaded)
+            saveTimesheetForCurrentPeriodIfDue()
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -160,6 +161,7 @@ public final class TimeTrackingViewModel: ObservableObject {
             configuration = config
             configuration.storageFolder = path
             applyLoadedEntries(entries)
+            saveTimesheetForCurrentPeriodIfDue()
             errorMessage = nil
         }
     }
@@ -250,9 +252,20 @@ public final class TimeTrackingViewModel: ObservableObject {
     // MARK: - Timesheet
     
     public func generateTimesheet() -> Timesheet {
+        let (periodStart, periodEnd) = currentPeriodBounds(now: Date())
+        let entries = allEntries.entries(from: periodStart, to: periodEnd)
+        return Timesheet(
+            periodStart: periodStart,
+            periodEnd: periodEnd,
+            entries: entries,
+            status: .draft
+        )
+    }
+    
+    /// Current period (start/end) in config timezone for the given date.
+    private func currentPeriodBounds(now: Date) -> (Date, Date) {
         var cal = Calendar.current
         cal.timeZone = configuration.timezone
-        let now = Date()
         let periodStart: Date
         let periodEnd: Date
         switch configuration.timesheetPeriod {
@@ -266,13 +279,60 @@ public final class TimeTrackingViewModel: ObservableObject {
             periodStart = cal.date(from: cal.dateComponents([.year, .month], from: now)) ?? now
             periodEnd = cal.date(byAdding: DateComponents(month: 1, day: -1), to: periodStart) ?? now
         }
-        let entries = allEntries.entries(from: periodStart, to: periodEnd)
-        return Timesheet(
-            periodStart: periodStart,
-            periodEnd: periodEnd,
-            entries: entries,
-            status: .draft
-        )
+        return (periodStart, periodEnd)
+    }
+    
+    /// Notification due date/time for a period: latest occurrence of (notification day + time) within [periodStart, periodEnd].
+    private func notificationDueDate(periodStart: Date, periodEnd: Date) -> Date? {
+        guard let timeComps = configuration.notificationTimeComponents,
+              !configuration.notificationDays.isEmpty else { return nil }
+        var cal = Calendar.current
+        cal.timeZone = configuration.timezone
+        var date = periodEnd
+        while date >= periodStart {
+            let weekday = cal.component(.weekday, from: date)
+            if configuration.notificationDays.contains(weekday) {
+                return cal.date(bySettingHour: timeComps.hour ?? 0, minute: timeComps.minute ?? 0, second: 0, of: date)
+            }
+            date = cal.date(byAdding: .day, value: -1, to: date) ?? date
+        }
+        return nil
+    }
+    
+    /// If the notification due time for the current (or previous) period has passed, save that period's timesheet to the timesheets folder as a backup.
+    /// Uses a deterministic filename per period so macOS and iOS write the same file and don't both create a backup.
+    public func saveTimesheetForCurrentPeriodIfDue() {
+        guard storageService.getStorageFolderURL() != nil else { return }
+        guard configuration.notificationTimeComponents != nil,
+              !configuration.notificationDays.isEmpty else { return }
+        var cal = Calendar.current
+        cal.timeZone = configuration.timezone
+        let now = Date()
+        let tz = configuration.timezone
+        do {
+            func saveIfDue(periodStart: Date, periodEnd: Date) {
+                guard let due = notificationDueDate(periodStart: periodStart, periodEnd: periodEnd), now >= due else { return }
+                guard !storageService.timesheetFileExistsForPeriod(periodStart: periodStart, periodEnd: periodEnd, timeZone: tz) else { return }
+                let entries = allEntries.entries(from: periodStart, to: periodEnd)
+                let timesheet = Timesheet(periodStart: periodStart, periodEnd: periodEnd, entries: entries, status: .draft)
+                try? storageService.saveTimesheetForPeriod(timesheet, timeZone: tz)
+            }
+            let (curStart, curEnd) = currentPeriodBounds(now: now)
+            saveIfDue(periodStart: curStart, periodEnd: curEnd)
+            let prevEnd = cal.date(byAdding: .day, value: -1, to: curStart)!
+            let prevStart: Date
+            switch configuration.timesheetPeriod {
+            case .weekly:
+                prevStart = cal.date(byAdding: .day, value: -7, to: curStart)!
+            case .biweekly:
+                prevStart = cal.date(byAdding: .day, value: -14, to: curStart)!
+            case .monthly:
+                prevStart = cal.date(byAdding: DateComponents(month: -1), to: curStart)!
+            }
+            saveIfDue(periodStart: prevStart, periodEnd: prevEnd)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
     }
     
     // MARK: - Notifications

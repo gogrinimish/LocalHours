@@ -96,12 +96,14 @@ All configuration is stored in JSON files within your chosen storage folder, ena
 ```
 YourTimesheetFolder/
 ├── config.json              # App configuration
-├── timesheets/              # Generated timesheets (one file per period)
-│   ├── 2026-01-<id>.json    # e.g. 2026-01-abc12345.json
+├── timesheets/              # Auto-saved period timesheets (backup; one file per period)
+│   ├── period-20260203_20260209.json   # Deterministic name so macOS and iOS don't both create one
 │   └── ...
 └── time-entries/            # Raw time entry data
     └── entries.json
 ```
+
+When your reminder time arrives for a period (e.g. Friday 5pm for a weekly timesheet), the app auto-saves that period’s timesheet into `timesheets/`. This gives you a backup if `entries.json` is ever lost, and supports future features like choosing a different period to send for approval.
 
 ### Configuration Options
 

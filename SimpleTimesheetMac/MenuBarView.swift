@@ -19,6 +19,9 @@ struct MenuBarView: View {
             }
         }
         .frame(width: 340)
+        .onAppear {
+            viewModel.saveTimesheetForCurrentPeriodIfDue()
+        }
     }
     
     // MARK: - Main View
