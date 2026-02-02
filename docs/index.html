@@ -1,81 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SimpleTimesheet – Local-first time tracking for macOS, iOS &amp; Android</title>
-  <meta name="description" content="Local-first time tracking for macOS, iOS, and Android. Track hours, generate timesheets, and email approvers — no accounts, no servers, no lock-in.">
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SimpleTimesheet – Local-first time tracking</title>
+  <meta name="description" content="Local-first time tracking for macOS, iOS, and Android. Track hours, generate timesheets, and email approvers — no accounts, no servers, no lock-in." />
+  <link rel="stylesheet" href="styles.css?v=3" />
 </head>
 <body>
+
   <header>
     <div class="container">
       <h1>SimpleTimesheet</h1>
-      <p class="tagline">Track your hours. Build timesheets. Sync your way. Email with one click.</p>
+      <p class="eyebrow">LOCAL-FIRST TIME TRACKING</p>
+
+      <h2 class="hero-title">
+        Time tracking that lives in your folders — not someone else’s cloud
+      </h2>
+
+      <p class="hero-subtitle">
+        Track hours, generate timesheets, and email approvers.<br />
+        No accounts. No servers. No lock-in.
+      </p>
+
+      <div class="cta-row">
+        <a class="primary-cta" href="#install">Download for macOS</a>
+        <a class="secondary-cta" href="https://github.com/gogrinimish/SimpleTimesheet">View on GitHub</a>
+      </div>
+
       <nav>
-        <a href="#screenshots">Screenshots</a>
+        <a href="#how-it-works">How it works</a>
         <a href="#features">Features</a>
+        <a href="#who-its-for">Who it’s for</a>
         <a href="#platforms">Platforms</a>
-        <a href="#install">Install</a>
-        <a href="https://github.com/gogrinimish/SimpleTimesheet">GitHub</a>
       </nav>
     </div>
   </header>
-      <p>SimpleTimesheet is a local-first time tracking app that keeps your data in a folder you control.
-        Use iCloud, Google Drive, or OneDrive to sync across devices — or keep everything fully offline.
-        No accounts, no analytics, no proprietary cloud, and no lock-in.</p>
+
+  <section id="trust-strip">
+    <div class="container trust-strip">
+      <span>Open source</span>
+      <span>MIT licensed</span>
+      <span>No tracking</span>
+      <span>No account required</span>
+    </div>
+  </section>
+
+  <main>
+
+    <section id="philosophy">
+      <div class="container philosophy-grid">
+        <div class="philosophy-card">
+          <h3>Your data is just files</h3>
+          <p>
+            All time entries are stored as files in a folder you control.
+            Inspect them, back them up, or move them anytime.
+          </p>
+        </div>
+
+        <div class="philosophy-card">
+          <h3>Bring your own sync</h3>
+          <p>
+            Sync across devices using iCloud, Google Drive, or OneDrive —
+            or keep everything fully offline.
+          </p>
+        </div>
+
+        <div class="philosophy-card">
+          <h3>No SaaS nonsense</h3>
+          <p>
+            No accounts, no analytics, no subscriptions, and no proprietary cloud.
+          </p>
+        </div>
+      </div>
     </section>
 
-    <section id="screenshots">
+    <section id="how-it-works">
       <div class="container">
-        <h2>Screenshots</h2>
+        <h2>How it works</h2>
 
-        <h3>macOS Menu Bar</h3>
-        <div class="screenshot-grid">
-          <figure>
-            <img src="screenshots/macos-menubar.png" alt="macOS menu bar popover" loading="lazy">
-            <figcaption>Menu bar popover</figcaption>
-          </figure>
-          <figure>
-            <img src="screenshots/Menu%20Bar%20Icon%20for%20Running%20Timer.png" alt="Menu bar icon when timer is running" loading="lazy">
-            <figcaption>Menu bar icon (timer running)</figcaption>
-          </figure>
+        <div class="step">
+          <h3>1. Track time</h3>
+          <p>Start and stop the timer from the macOS menu bar or iOS widgets.</p>
+          <img src="screenshots/Timer%20Running%20State.png" alt="Timer running" loading="lazy" />
+          <small>Menu bar timer while tracking</small>
         </div>
 
-        <h3>Timer &amp; Timesheet</h3>
-        <div class="screenshot-grid">
-          <figure>
-            <img src="screenshots/Timer%20Running%20State.png" alt="Timer running state" loading="lazy">
-            <figcaption>Timer running</figcaption>
-          </figure>
-          <figure>
-            <img src="screenshots/timesheet-preview.png" alt="Timesheet preview" loading="lazy">
-            <figcaption>Timesheet preview</figcaption>
-          </figure>
+        <div class="step">
+          <h3>2. Add context</h3>
+          <p>Add a short description when you stop the clock.</p>
+          <img src="screenshots/Settings%20Pane%202%20-%20Email%20Template.png" alt="Add description" loading="lazy" />
+          <small>Quick description on stop</small>
         </div>
 
-        <h3>Settings</h3>
-        <div class="screenshot-grid screenshot-grid-3">
-          <figure>
-            <img src="screenshots/Settings%20Pane%201%20-%20Folder%20and%20Timezone%20Setup.png" alt="Settings – folder and timezone" loading="lazy">
-            <figcaption>Folder &amp; timezone</figcaption>
-          </figure>
-          <figure>
-            <img src="screenshots/Settings%20Pane%202%20-%20Email%20Template.png" alt="Settings – email template" loading="lazy">
-            <figcaption>Email template</figcaption>
-          </figure>
-          <figure>
-            <img src="screenshots/Settings%20Pane%203%20-%20Timesheet%20Send%20Reminder.png" alt="Settings – timesheet send reminder" loading="lazy">
-            <figcaption>Timesheet send reminder</figcaption>
-          </figure>
+        <div class="step">
+          <h3>3. Generate timesheets</h3>
+          <p>Create weekly, bi-weekly, or monthly timesheets automatically.</p>
+          <img src="screenshots/timesheet-preview.png" alt="Timesheet preview" loading="lazy" />
+          <small>Weekly timesheet preview</small>
         </div>
 
-        <h3>Email</h3>
-        <div class="screenshot-grid">
-          <figure>
-            <img src="screenshots/Embedded%20Timesheet%20Email%20Draft.png" alt="Embedded timesheet email draft" loading="lazy">
-            <figcaption>Embedded timesheet email draft</figcaption>
-          </figure>
+        <div class="step">
+          <h3>4. Send</h3>
+          <p>Email approvers with an embedded summary or CSV attachment.</p>
+          <img src="screenshots/Embedded%20Timesheet%20Email%20Draft.png" alt="Email draft" loading="lazy" />
+          <small>Draft email with embedded summary</small>
         </div>
       </div>
     </section>
@@ -83,13 +112,45 @@
     <section id="features">
       <div class="container">
         <h2>Features</h2>
+
+        <h3>Track</h3>
         <ul>
-          <li><strong>Quick time tracking</strong> – Start and stop the clock with one tap or click.</li>
-          <li><strong>Work descriptions</strong> – Add notes when you stop the clock.</li>
-          <li><strong>Timesheet generation</strong> – Weekly, bi-weekly, or monthly timesheets.</li>
-          <li><strong>Email integration</strong> – Draft emails with embedded timesheet or CSV attachment.</li>
-          <li><strong>Cross-device sync</strong> – One folder (iCloud/Google Drive/OneDrive) shared across devices.</li>
-          <li><strong>Custom templates</strong> – Email subject and body templates with placeholders.</li>
+          <li>One-tap start and stop</li>
+          <li>Menu bar app and widgets</li>
+          <li>Notifications and reminders</li>
+        </ul>
+
+        <h3>Understand</h3>
+        <ul>
+          <li>Descriptions per work session</li>
+          <li>Clear history view</li>
+          <li>Timezone-aware entries</li>
+        </ul>
+
+        <h3>Report</h3>
+        <ul>
+          <li>Weekly, bi-weekly, or monthly timesheets</li>
+          <li>Embedded email summaries</li>
+          <li>CSV exports</li>
+        </ul>
+
+        <h3>Control</h3>
+        <ul>
+          <li>Folder-based storage</li>
+          <li>Custom email templates</li>
+          <li>Works fully offline</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="who-its-for">
+      <div class="container">
+        <h2>Who it’s for</h2>
+        <ul>
+          <li>Consultants and freelancers billing hours</li>
+          <li>Contractors submitting weekly timesheets</li>
+          <li>People who don’t want another SaaS account</li>
+          <li>Developers who prefer file-based workflows</li>
         </ul>
       </div>
     </section>
@@ -97,18 +158,21 @@
     <section id="platforms">
       <div class="container">
         <h2>Platforms</h2>
+
         <div class="platform-grid">
           <div class="platform-card">
             <h3>macOS</h3>
-            <p>Menu bar app, settings window, notifications.</p>
+            <p>Menu bar app, keyboard shortcuts, notifications.</p>
           </div>
+
           <div class="platform-card">
             <h3>iOS</h3>
-            <p>Timer, History, Timesheet, Settings tabs. Home screen widgets. App Shortcuts. Stop-from-widget opens app to add description.</p>
+            <p>Widgets, quick actions, notifications.</p>
           </div>
+
           <div class="platform-card">
             <h3>Android</h3>
-            <p>In progress via <a href="https://skip.dev">Skip</a>. Same data format for cloud sync.</p>
+            <p>In progress. Same data format for seamless sync.</p>
           </div>
         </div>
       </div>
@@ -117,23 +181,41 @@
     <section id="install">
       <div class="container">
         <h2>Install</h2>
-        <p><a href="https://github.com/gogrinimish/SimpleTimesheet/releases">Download the latest release</a> (macOS app ZIP, unsigned iOS IPA for sideloading).</p>
-        <p>Or <a href="https://github.com/gogrinimish/SimpleTimesheet">clone and build from source</a> in Xcode.</p>
+        <p>
+          <a href="https://github.com/gogrinimish/SimpleTimesheet/releases">
+            Download the latest release
+          </a>
+          (macOS ZIP, unsigned iOS IPA).
+        </p>
+        <p>
+          Or <a href="https://github.com/gogrinimish/SimpleTimesheet">
+            clone and build from source
+          </a> in Xcode.
+        </p>
       </div>
     </section>
 
     <section id="feedback">
       <div class="container">
         <h2>Feedback &amp; bugs</h2>
-        <p>Open an <a href="https://github.com/gogrinimish/SimpleTimesheet/issues">issue</a> for bugs, feature requests, or feedback.</p>
+        <p>
+          Open an <a href="https://github.com/gogrinimish/SimpleTimesheet/issues">
+            issue on GitHub
+          </a>.
+        </p>
       </div>
     </section>
+
   </main>
 
   <footer>
     <div class="container">
-      <p><a href="https://github.com/gogrinimish/SimpleTimesheet">SimpleTimesheet</a> – MIT License. No tracking, no account required.</p>
+      <p>
+        <a href="https://github.com/gogrinimish/SimpleTimesheet">SimpleTimesheet</a>
+        — Open source. MIT licensed. No tracking. No account required.
+      </p>
     </div>
   </footer>
+
 </body>
 </html>

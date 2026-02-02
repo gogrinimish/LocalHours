@@ -1,167 +1,248 @@
-:root {
-  --bg: #0d1117;
-  --surface: #161b22;
-  --text: #e6edf3;
-  --muted: #8b949e;
-  --accent: #58a6ff;
-  --border: #30363d;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  line-height: 1.6;
-  color: var(--text);
-  background: var(--bg);
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-header {
-  padding: 3rem 0;
-  border-bottom: 1px solid var(--border);
-}
-
-header h1 {
-  margin: 0 0 0.5rem;
-  font-size: 2rem;
-  font-weight: 600;
-}
-
-.tagline {
-  margin: 0 0 1.5rem;
-  color: var(--muted);
-  font-size: 1.125rem;
-}
-
-nav {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-nav a {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-nav a:hover {
-  text-decoration: underline;
-}
-
-main section {
-  padding: 2.5rem 0;
-  border-bottom: 1px solid var(--border);
-}
-
-main section:last-of-type {
-  border-bottom: none;
-}
-
-h2 {
-  margin: 0 0 1rem;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1.125rem;
-  font-weight: 600;
-}
-
-ul {
-  padding-left: 1.5rem;
-  margin: 0 0 1rem;
-}
-
-li {
-  margin-bottom: 0.5rem;
-}
-
-a {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-.platform-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-.platform-card {
-  padding: 1.25rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-}
-
-.platform-card p {
-  margin: 0;
-  font-size: 0.9375rem;
-  color: var(--muted);
-}
-
-/* Screenshots */
-#screenshots h3 {
-  margin: 1.5rem 0 0.75rem;
-}
-
-#screenshots h3:first-of-type {
-  margin-top: 0;
-}
-
-.screenshot-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.25rem;
-  margin-bottom: 0.5rem;
-}
-
-.screenshot-grid-3 {
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-}
-
-#screenshots figure {
-  margin: 0;
-  padding: 0;
-}
-
-#screenshots figure img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-}
-
-#screenshots figcaption {
-  margin-top: 0.5rem;
-  font-size: 0.875rem;
-  color: var(--muted);
-}
-
-footer {
-  padding: 2rem 0;
-  border-top: 1px solid var(--border);
-  color: var(--muted);
-  font-size: 0.875rem;
-}
-
-footer p {
-  margin: 0;
-}
+/* =========================
+   Design system
+   ========================= */
+   :root {
+    --bg: #ffffff;
+    --bg-alt: #f6f7f9;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #e5e7eb;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --card: #ffffff;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b0e14;
+      --bg-alt: #111827;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --accent: #60a5fa;
+      --accent-hover: #3b82f6;
+      --card: #0f172a;
+    }
+  }
+  
+  /* =========================
+     Base
+     ========================= */
+  * {
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, Inter, system-ui, sans-serif;
+  }
+  
+  .container {
+    max-width: 900px;
+    padding: 0 20px;
+    margin: 0 auto;
+  }
+  
+  section {
+    padding: 72px 0;
+  }
+  
+  section:nth-of-type(even) {
+    background: var(--bg-alt);
+  }
+  
+  h1, h2, h3 {
+    letter-spacing: -0.02em;
+  }
+  
+  h1 {
+    font-size: 2.8rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 24px;
+  }
+  
+  p {
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  
+  a {
+    color: var(--accent);
+  }
+  
+  /* =========================
+     Header / Hero
+     ========================= */
+  header {
+    padding: 96px 0 72px;
+    text-align: center;
+  }
+  
+  .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  
+  .hero-title {
+    font-size: 2.6rem;
+    margin: 16px 0;
+  }
+  
+  .hero-subtitle {
+    max-width: 720px;
+    margin: 0 auto 28px;
+  }
+  
+  .cta-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+  
+  .primary-cta,
+  .secondary-cta {
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  
+  .primary-cta {
+    background: var(--accent);
+    color: white;
+  }
+  
+  .primary-cta:hover {
+    background: var(--accent-hover);
+  }
+  
+  .secondary-cta {
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  
+  /* =========================
+     Navigation
+     ========================= */
+  nav {
+    margin-top: 16px;
+  }
+  
+  nav a {
+    margin: 0 10px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  
+  nav a:hover {
+    color: var(--text);
+  }
+  
+  /* =========================
+     Trust strip
+     ========================= */
+  #trust-strip {
+    padding: 16px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .trust-strip {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    font-size: 0.9rem;
+    color: var(--muted);
+    flex-wrap: wrap;
+  }
+  
+  /* =========================
+     Philosophy
+     ========================= */
+  .philosophy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  
+  .philosophy-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+  }
+  
+  /* =========================
+     How it works
+     ========================= */
+  .step {
+    margin-bottom: 64px;
+  }
+  
+  .step img {
+    margin-top: 16px;
+    max-width: 100%;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+  }
+  
+  .step small {
+    display: block;
+    margin-top: 6px;
+    color: var(--muted);
+  }
+  
+  /* =========================
+     Features
+     ========================= */
+  #features h3 {
+    margin-top: 32px;
+  }
+  
+  #features ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  #features li {
+    padding: 6px 0;
+    color: var(--muted);
+  }
+  
+  /* =========================
+     Platforms
+     ========================= */
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  
+  .platform-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+  }
+  
+  /* =========================
+     Footer
+     ========================= */
+  footer {
+    padding: 48px 0;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+  
+  footer p {
+    color: var(--muted);
+  }

@@ -5,11 +5,14 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   build-release:
     name: Build Release
     runs-on: macos-15
-    
+
     steps:
     - uses: actions/checkout@v4
     
@@ -108,7 +111,5 @@ jobs:
           build/release/SimpleTimesheet-iOS-${{ steps.version.outputs.VERSION }}-unsigned.ipa
         body: ${{ steps.notes.outputs.NOTES }}
         draft: true
-        generate_release_notes: true
-        append_body: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
