@@ -44,7 +44,7 @@ A local-first, cross-platform time tracking app for macOS, iOS, and Android (pla
 - **Cross-Device Sync**: Keep data in a shared folder (iCloud, Google Drive, OneDrive) for seamless multi-device sync
 
 ### Platform-Specific Features
-- **macOS**: Menu bar access, keyboard shortcuts, and notifications
+- **macOS**: Menu bar access and notifications
 - **iOS**: Widgets, long-press actions, and notifications
 - **Android**: PLANNED
 
@@ -130,14 +130,6 @@ YourTimesheetFolder/
 2. Tap the play button to start tracking
 3. Tap the stop button to stop and add a description
 4. Use the app for configuration and viewing history
-
-### Keyboard Shortcuts (macOS)
-
-| Shortcut | Action |
-|----------|--------|
-| `⌘⇧S` | Start/Stop clock |
-| `⌘⇧T` | Open timesheet |
-| `⌘,` | Open preferences |
 
 ## Privacy
 

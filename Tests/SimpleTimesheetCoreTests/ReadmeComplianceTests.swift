@@ -129,9 +129,9 @@ final class ReadmeComplianceTests: XCTestCase {
         XCTAssertEqual(loaded.emailSubject, "{{userName}} - Timesheet")
     }
     
-    // MARK: - Usage (README: Keyboard Shortcuts - macOS)
+    // MARK: - Usage (README: start/stop and timesheet)
     
-    /// README: Keyboard shortcuts are documented; we verify the app supports start/stop and timesheet concepts
+    /// README: App supports start/stop and timesheet concepts
     func testStartStopAndTimesheetConceptsSupported() {
         var entry = TimeEntry(startTime: Date(), description: "")
         XCTAssertTrue(entry.isActive)

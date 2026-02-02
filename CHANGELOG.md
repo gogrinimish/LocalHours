@@ -19,7 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### macOS
 - Menu bar app with quick access
-- Keyboard shortcuts (⌘⇧S for start/stop, ⌘⇧T for timesheet)
 - Settings window for configuration
 - Native notifications for timesheet reminders
 
