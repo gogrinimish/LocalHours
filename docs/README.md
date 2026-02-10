@@ -23,3 +23,4 @@ Add these files so they show in the main README:
 - `screenshots/macos-menubar.png`
 - `screenshots/ios-timer.png`
 - `screenshots/timesheet-preview.png`
+- `screenshots/Mac App About.png`

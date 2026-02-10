@@ -17,6 +17,12 @@ A local-first, cross-platform time tracking app for macOS, iOS, and Android (pla
 |------------------|--------------------------------|
 | ![macOS menu bar](docs/screenshots/macos-menubar.png) | ![Menu bar icon for running timer](docs/screenshots/Menu%20Bar%20Icon%20for%20Running%20Timer.png) |
 
+### Mac app About
+
+| About window |
+|-------------|
+| ![Mac app About window](docs/screenshots/Mac%20App%20About.png) |
+
 ### Timer
 
 | Timer running | Timesheet preview |
