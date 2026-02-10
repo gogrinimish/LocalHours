@@ -82,6 +82,12 @@
     padding: 96px 0 72px;
     text-align: center;
   }
+
+  .app-icon {
+    border-radius: 22%;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  }
   
   .eyebrow {
     font-size: 0.75rem;
