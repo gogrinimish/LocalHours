@@ -1,6 +1,6 @@
-# Contributing to SimpleTimesheet
+# Contributing to Local Hours
 
-Thank you for your interest in contributing to SimpleTimesheet! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to Local Hours! This document provides guidelines and instructions for contributing.
 
 ## Code of Conduct
 
@@ -10,7 +10,7 @@ By participating in this project, you agree to maintain a respectful and inclusi
 
 ### Reporting Bugs
 
-1. Check if the bug has already been reported in [Issues](https://github.com/gogrinimish/SimpleTimesheet/issues)
+1. Check if the bug has already been reported in [Issues](https://github.com/gogrinimish/LocalHours/issues)
 2. If not, create a new issue with:
    - Clear, descriptive title
    - Steps to reproduce
@@ -55,14 +55,14 @@ skip checkup
 
 ```bash
 # Clone the repository
-git clone https://github.com/gogrinimish/SimpleTimesheet.git
-cd SimpleTimesheet
+git clone https://github.com/gogrinimish/LocalHours.git
+cd LocalHours
 
 # Open in Xcode
-open SimpleTimesheet.xcodeproj
+open LocalHours.xcodeproj
 
 # Or build from command line
-xcodebuild -scheme SimpleTimesheet -destination 'platform=iOS Simulator,name=iPhone 15'
+xcodebuild -scheme LocalHours -destination 'platform=iOS Simulator,name=iPhone 15'
 ```
 
 ### Running Tests
@@ -97,7 +97,7 @@ skip run --android
 ### Code Organization
 
 ```
-Sources/SimpleTimesheetCore/
+Sources/LocalHoursCore/
 ├── Models/          # Data models
 ├── Services/        # Business logic
 ├── ViewModels/      # UI state management
@@ -155,7 +155,7 @@ test: Add unit tests for TimeEntry
 
 ## Getting Help
 
-- Open a [Discussion](https://github.com/gogrinimish/SimpleTimesheet/discussions)
+- Open a [Discussion](https://github.com/gogrinimish/LocalHours/discussions)
 - Check existing documentation
 - Review closed issues
 

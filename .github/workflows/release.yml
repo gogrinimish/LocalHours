@@ -30,10 +30,10 @@ jobs:
     - name: Build iOS Release
       run: |
         xcodebuild archive \
-          -project SimpleTimesheet.xcodeproj \
-          -scheme SimpleTimesheet \
+          -project LocalHours.xcodeproj \
+          -scheme LocalHours \
           -destination 'generic/platform=iOS' \
-          -archivePath build/SimpleTimesheet-iOS.xcarchive \
+          -archivePath build/LocalHours-iOS.xcarchive \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO \
           CODE_SIGNING_ALLOWED=NO \
@@ -42,10 +42,10 @@ jobs:
     - name: Build macOS Release
       run: |
         xcodebuild archive \
-          -project SimpleTimesheet.xcodeproj \
-          -scheme SimpleTimesheetMac \
+          -project LocalHours.xcodeproj \
+          -scheme LocalHoursMac \
           -destination 'generic/platform=macOS' \
-          -archivePath build/SimpleTimesheet-macOS.xcarchive \
+          -archivePath build/LocalHours-macOS.xcarchive \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO \
           CODE_SIGNING_ALLOWED=NO \
@@ -54,30 +54,30 @@ jobs:
     - name: Package macOS App
       run: |
         mkdir -p build/release
-        cp -R build/SimpleTimesheet-macOS.xcarchive/Products/Applications/SimpleTimesheetMac.app build/release/
+        cp -R build/LocalHours-macOS.xcarchive/Products/Applications/LocalHoursMac.app build/release/
         cd build/release
-        zip -r "SimpleTimesheet-macOS-${{ steps.version.outputs.VERSION }}.zip" SimpleTimesheetMac.app
+        zip -r "LocalHours-macOS-${{ steps.version.outputs.VERSION }}.zip" LocalHoursMac.app
     
     - name: Package iOS App (Unsigned)
       run: |
         mkdir -p build/release/Payload
-        cp -R build/SimpleTimesheet-iOS.xcarchive/Products/Applications/SimpleTimesheet.app build/release/Payload/
+        cp -R build/LocalHours-iOS.xcarchive/Products/Applications/LocalHours.app build/release/Payload/
         cd build/release
-        zip -r "SimpleTimesheet-iOS-${{ steps.version.outputs.VERSION }}-unsigned.ipa" Payload
+        zip -r "LocalHours-iOS-${{ steps.version.outputs.VERSION }}-unsigned.ipa" Payload
         rm -rf Payload
     
     - name: Generate Release Notes
       id: notes
       run: |
         echo "NOTES<<EOF" >> $GITHUB_OUTPUT
-        echo "## SimpleTimesheet v${{ steps.version.outputs.VERSION }}" >> $GITHUB_OUTPUT
+        echo "## Local Hours v${{ steps.version.outputs.VERSION }}" >> $GITHUB_OUTPUT
         echo "" >> $GITHUB_OUTPUT
         echo "### Downloads" >> $GITHUB_OUTPUT
         echo "" >> $GITHUB_OUTPUT
         echo "| Platform | File | Notes |" >> $GITHUB_OUTPUT
         echo "|----------|------|-------|" >> $GITHUB_OUTPUT
-        echo "| macOS | SimpleTimesheet-macOS-${{ steps.version.outputs.VERSION }}.zip | Unsigned app, may require allowing in Security settings |" >> $GITHUB_OUTPUT
-        echo "| iOS | SimpleTimesheet-iOS-${{ steps.version.outputs.VERSION }}-unsigned.ipa | Unsigned IPA for sideloading (requires AltStore, Sideloadly, or similar) |" >> $GITHUB_OUTPUT
+        echo "| macOS | LocalHours-macOS-${{ steps.version.outputs.VERSION }}.zip | Unsigned app, may require allowing in Security settings |" >> $GITHUB_OUTPUT
+        echo "| iOS | LocalHours-iOS-${{ steps.version.outputs.VERSION }}-unsigned.ipa | Unsigned IPA for sideloading (requires AltStore, Sideloadly, or similar) |" >> $GITHUB_OUTPUT
         echo "" >> $GITHUB_OUTPUT
         echo "### Installation" >> $GITHUB_OUTPUT
         echo "" >> $GITHUB_OUTPUT
@@ -107,8 +107,8 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: |
-          build/release/SimpleTimesheet-macOS-${{ steps.version.outputs.VERSION }}.zip
-          build/release/SimpleTimesheet-iOS-${{ steps.version.outputs.VERSION }}-unsigned.ipa
+          build/release/LocalHours-macOS-${{ steps.version.outputs.VERSION }}.zip
+          build/release/LocalHours-iOS-${{ steps.version.outputs.VERSION }}-unsigned.ipa
         body: ${{ steps.notes.outputs.NOTES }}
         draft: true
       env:

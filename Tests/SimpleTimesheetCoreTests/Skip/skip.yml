@@ -1,6 +1,0 @@
-# Skip configuration for SimpleTimesheetCoreTests
-# https://skip.tools/docs/
-
-# Module configuration  
-module:
-  name: SimpleTimesheetCoreTests

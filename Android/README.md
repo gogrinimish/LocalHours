@@ -1,6 +1,6 @@
-# SimpleTimesheet Android
+# Local Hours Android
 
-This directory contains the Android-specific configuration and resources for SimpleTimesheet.
+This directory contains the Android-specific configuration and resources for Local Hours.
 
 ## Building for Android
 

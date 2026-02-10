@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Icon Generation Script for SimpleTimesheet
+# Icon Generation Script for LocalHours
 # Uses macOS built-in 'sips' command - no external dependencies required
 #
 # Usage: ./Scripts/generate-icons.sh [path/to/source-icon-1024.png]

@@ -1,0 +1,6 @@
+# Skip configuration for LocalHoursCoreTests
+# https://skip.tools/docs/
+
+# Module configuration  
+module:
+  name: LocalHoursCoreTests

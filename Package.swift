@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "SimpleTimesheet",
+    name: "LocalHours",
     defaultLocalization: "en",
     platforms: [
         .iOS(.v17),
@@ -10,8 +10,8 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "SimpleTimesheetCore",
-            targets: ["SimpleTimesheetCore"]
+            name: "LocalHoursCore",
+            targets: ["LocalHoursCore"]
         ),
     ],
     dependencies: [
@@ -22,14 +22,14 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "SimpleTimesheetCore",
+            name: "LocalHoursCore",
             dependencies: [],
-            path: "Sources/SimpleTimesheetCore"
+            path: "Sources/LocalHoursCore"
         ),
         .testTarget(
-            name: "SimpleTimesheetCoreTests",
-            dependencies: ["SimpleTimesheetCore"],
-            path: "Tests/SimpleTimesheetCoreTests"
+            name: "LocalHoursCoreTests",
+            dependencies: ["LocalHoursCore"],
+            path: "Tests/LocalHoursCoreTests"
         ),
     ]
 )

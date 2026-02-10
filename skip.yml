@@ -1,10 +1,10 @@
-# Skip Configuration for SimpleTimesheet
+# Skip Configuration for LocalHours
 # https://skip.tools/docs/
 
 # Project configuration
 project:
-  name: SimpleTimesheet
-  bundle_id: com.simpletimesheet.app
+  name: LocalHours
+  bundle_id: com.localhours.app
   version: 1.0.0
   
 # Android-specific configuration
@@ -14,7 +14,7 @@ android:
   compile_sdk: 34
   
   # Application ID for Android
-  application_id: com.simpletimesheet.app
+  application_id: com.localhours.app
   
   # Permissions
   permissions:
@@ -33,14 +33,14 @@ android:
 skip:
   # Modules to transpile
   modules:
-    - SimpleTimesheetCore
+    - LocalHoursCore
     
   # Files to exclude from transpilation
   exclude:
     - "**/*Tests.swift"
     - "**/Preview Content/**"
-    - "SimpleTimesheetMac/**"  # macOS-only code
-    - "SimpleTimesheetWidget/**"  # iOS widgets (Android has different implementation)
+    - "LocalHoursMac/**"  # macOS-only code
+    - "LocalHoursWidget/**"  # iOS widgets (Android has different implementation)
     
   # Platform-specific code handling
   platform_code:

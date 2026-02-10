@@ -1,12 +1,13 @@
-# SimpleTimesheet
+# Local Hours
+### A Simple Local-first Timesheet App
 
-[![Build and Test](https://github.com/gogrinimish/SimpleTimesheet/actions/workflows/build.yml/badge.svg)](https://github.com/gogrinimish/SimpleTimesheet/actions/workflows/build.yml)
+[![Build and Test](https://github.com/gogrinimish/LocalHours/actions/workflows/build.yml/badge.svg)](https://github.com/gogrinimish/LocalHours/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20iOS-blue.svg)](https://github.com/gogrinimish/SimpleTimesheet)
+[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20iOS-blue.svg)](https://github.com/gogrinimish/LocalHours)
 
 A local-first, cross-platform time tracking app for macOS, iOS, and Android (planned). Track your hours, generate timesheets, and email them to approvers — all without accounts, servers, or data lock-in.
 
-**Learn more:** [SimpleTimesheet website](https://gogrinimish.github.io/SimpleTimesheet/)
+**Learn more:** [Local Hours website](https://gogrinimish.github.io/LocalHours/)
 
 ## Screenshots
 
@@ -50,7 +51,7 @@ A local-first, cross-platform time tracking app for macOS, iOS, and Android (pla
 
 ### Cross-Device Sync
 
-SimpleTimesheet keeps your data in sync across devices using your cloud storage folder (iCloud, Google Drive, OneDrive). Here's how sync works:
+Local Hours keeps your data in sync across devices using your cloud storage folder (iCloud, Google Drive, OneDrive). Here's how sync works:
 
 #### Same-Device Sync (iOS App ↔ Widget)
 
@@ -96,23 +97,23 @@ skip checkup
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/gogrinimish/SimpleTimesheet.git
-cd SimpleTimesheet
+git clone https://github.com/gogrinimish/LocalHours.git
+cd LocalHours
 ```
 
 2. Open in Xcode:
 ```bash
-open SimpleTimesheet.xcodeproj
+open LocalHours.xcodeproj
 ```
 
 3. Build and run:
-   - For macOS: Select `SimpleTimesheetMac` scheme
-   - For iOS: Select `SimpleTimesheet` scheme
-   - For Android: Select `SimpleTimesheet` scheme and choose Android device/emulator
+   - For macOS: Select `LocalHoursMac` scheme
+   - For iOS: Select `LocalHours` scheme
+   - For Android: Select `LocalHours` scheme and choose Android device/emulator
 
 ### Pre-built Releases
 
-Download the latest release from the [Releases](https://github.com/gogrinimish/SimpleTimesheet/releases) page.
+Download the latest release from the [Releases](https://github.com/gogrinimish/LocalHours/releases) page.
 
 > **Note:** The releases are unsigned. For macOS, you may need to right-click and select "Open" on first launch. For iOS, you'll need to sideload using AltStore, Sideloadly, or a similar tool.
 
@@ -155,15 +156,14 @@ When your reminder time arrives for a period (e.g. Friday 5pm for a weekly times
 
 ### iOS/Android Widgets
 
-1. Add the SimpleTimesheet widget to your home screen
+1. Add the Local Hours widget to your home screen
 2. Tap the play button to start tracking
 3. Tap the stop button to stop and add a description
 4. Use the app for configuration and viewing history
 
 ## Privacy
 
-
-SimpleTimesheet is built from the ground up to be local-first and privacy-preserving:
+Local Hours is built from the ground up to be local-first and privacy-preserving:
 - **Your data, your files**: All data is stored as files in a folder you control
 - **No servers, no accounts**: The app works fully offline and never requires sign-ups
 - **Bring your own sync**: Use iCloud, Google Drive, or OneDrive to sync across devices
@@ -172,22 +172,22 @@ SimpleTimesheet is built from the ground up to be local-first and privacy-preser
 
 ## Feedback & Bugs
 
-Found a bug or have a suggestion? Please open an [issue](https://github.com/gogrinimish/SimpleTimesheet/issues). We use issues for:
+Found a bug or have a suggestion? Please open an [issue](https://github.com/gogrinimish/LocalHours/issues). We use issues for:
 
 - **Bug reports** – describe the problem, steps to reproduce, and your environment (OS, app version).
 - **Feature requests** – describe the feature and how you’d use it.
 - **General feedback** – ideas, UX improvements, or documentation fixes.
 
-Check [existing issues](https://github.com/gogrinimish/SimpleTimesheet/issues) first to avoid duplicates.
+Check [existing issues](https://github.com/gogrinimish/LocalHours/issues) first to avoid duplicates.
 
 ## Collaborators Wanted
 
-SimpleTimesheet is a solo project today. If you’d like to help shape the next set of features, we’re especially interested in collaborators for:
+Local Hours is a solo project today. If you’d like to help shape the next set of features, we’re especially interested in collaborators for:
 
 - **Android & Windows apps** – Extend the app to Android (e.g. via [Skip](https://skip.dev)) and Windows (e.g. Swift on Windows or a separate stack). Experience with cross-platform or native mobile/desktop is a plus.
 - **Multiple projects / timesheets** – Design and implement support for multiple projects or timesheet “workspaces” (e.g. per client, per contract) with clear data model and UI.
 
-If you’re interested, open an issue with the label `collaborator` or `good first project`, or comment on the relevant [roadmap issues](https://github.com/gogrinimish/SimpleTimesheet/issues).
+If you’re interested, open an issue with the label `collaborator` or `good first project`, or comment on the relevant [roadmap issues](https://github.com/gogrinimish/LocalHours/issues).
 
 ## Contributing
 
@@ -205,7 +205,7 @@ Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTIN
 
 ## Support the Project
 
-If SimpleTimesheet is useful to you, you can support its development:
+If Local Hours is useful to you, you can support its development:
 
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/hwrxt65o5i)
 

@@ -8,7 +8,7 @@
 
 ## Reporting a Vulnerability
 
-We take security seriously. If you discover a security vulnerability in SimpleTimesheet, please report it responsibly.
+We take security seriously. If you discover a security vulnerability in Local Hours, please report it responsibly.
 
 ### How to Report
 
@@ -29,7 +29,7 @@ We take security seriously. If you discover a security vulnerability in SimpleTi
 
 ### Security Best Practices for Users
 
-Since SimpleTimesheet stores data locally or in user-controlled cloud storage:
+Since Local Hours stores data locally or in user-controlled cloud storage:
 
 1. **Protect your storage folder**: Ensure your iCloud, Google Drive, or OneDrive account is secured with a strong password and 2FA
 2. **Review permissions**: The app only requests permissions necessary for its functionality
@@ -37,7 +37,7 @@ Since SimpleTimesheet stores data locally or in user-controlled cloud storage:
 
 ## Security Architecture
 
-SimpleTimesheet is designed with privacy and security in mind:
+Local Hours is designed with privacy and security in mind:
 
 - **No remote servers**: All data stays on your devices or your chosen cloud storage
 - **No analytics**: No usage data is collected or transmitted

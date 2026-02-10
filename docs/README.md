@@ -1,14 +1,14 @@
-# SimpleTimesheet – Static site (GitHub Pages)
+# Local Hours – Static site (GitHub Pages)
 
-This folder contains the static website for SimpleTimesheet.
+This folder contains the static website for Local Hours.
 
 ## Enable GitHub Pages
 
 1. In the repo: **Settings → Pages**
 2. Under **Source**, choose **Deploy from a branch**
 3. Branch: **main** (or **master**), folder: **/ (root)** or **/docs**
-   - If you choose **/docs**, GitHub serves `docs/index.html` at `https://<user>.github.io/SimpleTimesheet/`
-4. Save. The site will be available at `https://gogrinimish.github.io/SimpleTimesheet/` after a short delay.
+   - If you choose **/docs**, GitHub serves `docs/index.html` at `https://<user>.github.io/LocalHours/`
+4. Save. The site will be available at `https://gogrinimish.github.io/LocalHours/` after a short delay.
 
 ## Contents
 
