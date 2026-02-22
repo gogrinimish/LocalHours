@@ -195,9 +195,8 @@ public struct ConfigurationView: View {
     private var aboutSection: some View {
         Section {
             Link("View on GitHub", destination: URL(string: "https://github.com/gogrinimish/LocalHours")!)
-            Link("Buy Me a Coffee", destination: URL(string: "https://buymeacoffee.com/hwrxt65o5i")!)
         } header: {
-            Label("About & Support", systemImage: "heart")
+            Label("About", systemImage: "info.circle")
         }
     }
     

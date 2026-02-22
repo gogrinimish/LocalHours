@@ -104,9 +104,10 @@ struct SetupView: View {
                         Text("Welcome to Local Hours")
                             .font(.title.weight(.bold))
                         
-                        Text("Let's get you set up")
+                        Text("Track your hours, generate timesheets, and email approvers.")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
                     }
                     .padding(.top, 40)
                     
@@ -117,7 +118,7 @@ struct SetupView: View {
                             Text("Storage Location")
                                 .font(.headline)
                             
-                            Text("Choose a folder synced with iCloud, Google Drive, or OneDrive to enable cross-device sync.")
+                            Text("Optionally choose a folder synced with iCloud, Google Drive, or OneDrive to enable cross-device sync. You can always change this later in Settings.")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                             
@@ -126,7 +127,7 @@ struct SetupView: View {
                             } label: {
                                 HStack {
                                     Image(systemName: "folder")
-                                    Text(viewModel.configuration.storageFolder.isEmpty ? "Select Folder" : "Folder Selected")
+                                    Text(viewModel.configuration.storageFolder.isEmpty ? "Select Folder (Optional)" : "Folder Selected")
                                     Spacer()
                                     Image(systemName: "chevron.right")
                                         .foregroundStyle(.secondary)
@@ -140,8 +141,12 @@ struct SetupView: View {
                         
                         // User info
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Your Information")
+                            Text("Your Information (Optional)")
                                 .font(.headline)
+                            
+                            Text("You can fill these in later from Settings.")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
                             
                             TextField("Your Name", text: $userName)
                                 .textFieldStyle(.roundedBorder)
@@ -156,19 +161,29 @@ struct SetupView: View {
                     }
                     .padding(.horizontal)
                     
-                    // Continue button
-                    Button {
-                        completeSetup()
-                    } label: {
-                        Text("Get Started")
-                            .font(.headline)
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(canContinue ? Color.blue : Color.gray)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    VStack(spacing: 12) {
+                        // Continue button
+                        Button {
+                            completeSetup()
+                        } label: {
+                            Text("Get Started")
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                        
+                        // Skip button
+                        Button {
+                            skipSetup()
+                        } label: {
+                            Text("Skip for now")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
                     }
-                    .disabled(!canContinue)
                     .padding(.horizontal)
                     .padding(.top, 24)
                     .padding(.bottom, 32)
@@ -186,12 +201,6 @@ struct SetupView: View {
         }
     }
     
-    private var canContinue: Bool {
-        !viewModel.configuration.storageFolder.isEmpty &&
-        !userName.isEmpty &&
-        !approverEmail.isEmpty
-    }
-    
     private func handleFolderSelection(_ result: Result<[URL], Error>) {
         switch result {
         case .success(let urls):
@@ -199,13 +208,10 @@ struct SetupView: View {
                 viewModel.errorMessage = "No folder was selected."
                 return
             }
-            // Start accessing the security-scoped resource
             guard url.startAccessingSecurityScopedResource() else {
                 viewModel.errorMessage = "Access to the selected folder was denied."
                 return
             }
-            // Save bookmark for future access (keep access across app launches)
-            // Use app group so widget can also access
             let sharedDefaults = UserDefaults(suiteName: "group.com.localhours.shared") ?? .standard
             do {
                 let bookmarkData = try url.bookmarkData(
@@ -214,7 +220,6 @@ struct SetupView: View {
                     relativeTo: nil
                 )
                 sharedDefaults.set(bookmarkData, forKey: "storageFolderBookmark")
-                // Also save the path for widget fallback
                 sharedDefaults.set(url.path, forKey: "storageFolderPath")
             } catch {
                 viewModel.errorMessage = "Failed to save folder access: \(error.localizedDescription)"
@@ -222,7 +227,6 @@ struct SetupView: View {
                 return
             }
             Task {
-                // Note: Do NOT call stopAccessingSecurityScopedResource here - we want to keep access
                 do {
                     try await viewModel.setupStorage(url: url)
                 } catch {
@@ -237,10 +241,32 @@ struct SetupView: View {
     }
     
     private func completeSetup() {
-        var config = viewModel.configuration
-        config.userName = userName
-        config.approverEmail = approverEmail
-        viewModel.updateConfiguration(config)
+        setupWithDefaults()
+        if !userName.isEmpty || !approverEmail.isEmpty {
+            var config = viewModel.configuration
+            if !userName.isEmpty { config.userName = userName }
+            if !approverEmail.isEmpty { config.approverEmail = approverEmail }
+            viewModel.updateConfiguration(config)
+        }
+    }
+    
+    private func skipSetup() {
+        setupWithDefaults()
+    }
+    
+    private func setupWithDefaults() {
+        if viewModel.configuration.storageFolder.isEmpty {
+            let defaultPath = StorageService.defaultStoragePath()
+            Task {
+                do {
+                    try await viewModel.setupStorage(path: defaultPath)
+                } catch {
+                    await MainActor.run {
+                        viewModel.errorMessage = error.localizedDescription
+                    }
+                }
+            }
+        }
     }
 }
 

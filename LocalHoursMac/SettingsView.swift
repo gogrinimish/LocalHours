@@ -315,7 +315,6 @@ struct AboutView: View {
             
             VStack(spacing: 8) {
                 Link("View on GitHub", destination: URL(string: "https://github.com/gogrinimish/LocalHours")!)
-                Link("Buy Me a Coffee", destination: URL(string: "https://buymeacoffee.com/hwrxt65o5i")!)
                 
                 Text("Open Source • MIT License")
                     .font(.caption)
