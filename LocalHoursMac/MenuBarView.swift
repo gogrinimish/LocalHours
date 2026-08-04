@@ -4,12 +4,13 @@ import AppKit
 /// Main menu bar popover content
 struct MenuBarView: View {
     @ObservedObject var viewModel: TimeTrackingViewModel
-    
+
     @State private var showStopDialog = false
     @State private var entryDescription = ""
     @State private var projectName = ""
     @State private var showTimesheet = false
-    
+    @State private var showHistoryWindow = false
+
     var body: some View {
         VStack(spacing: 0) {
             if showTimesheet {
@@ -25,10 +26,18 @@ struct MenuBarView: View {
             // Start periodic sync - runs continuously while macOS app is active
             viewModel.startPeriodicFileSync()
         }
+        .onChange(of: showHistoryWindow) { _, newValue in
+            #if os(macOS)
+            if newValue {
+                NSApplication.openHistoryWindow(viewModel: viewModel)
+                showHistoryWindow = false
+            }
+            #endif
+        }
     }
-    
+
     // MARK: - Main View
-    
+
     private var mainView: some View {
         VStack(spacing: 0) {
             // Timer section or inline stop form (avoids sheet so menu bar window stays open)
@@ -37,19 +46,19 @@ struct MenuBarView: View {
             } else {
                 timerSection
             }
-            
+
             Divider()
-            
+
             // Today's entries
             todaySection
-            
+
             Divider()
-            
+
             // Actions
             actionsSection
         }
     }
-    
+
     /// Inline stop-timer form so Save doesn’t dismiss a sheet and close the menu bar window.
     private var stopFormInline: some View {
         StopTimerInline(
@@ -60,9 +69,9 @@ struct MenuBarView: View {
         )
         .padding()
     }
-    
+
     // MARK: - Timesheet View (Inline)
-    
+
     private var timesheetView: some View {
         VStack(spacing: 0) {
             // Header with back button
@@ -76,29 +85,29 @@ struct MenuBarView: View {
                     }
                 }
                 .buttonStyle(.plain)
-                
+
                 Spacer()
-                
+
                 Text("Timesheet")
                     .font(.headline)
-                
+
                 Spacer()
-                
+
                 // Spacer to balance the back button
                 Text("Back")
                     .opacity(0)
             }
             .padding()
-            
+
             Divider()
-            
+
             // Timesheet content
             TimesheetInlineView(viewModel: viewModel)
         }
     }
-    
+
     // MARK: - Timer Section
-    
+
     private var timerSection: some View {
         VStack(spacing: 12) {
             // Status indicator
@@ -106,19 +115,19 @@ struct MenuBarView: View {
                 Circle()
                     .fill(viewModel.isTracking ? Color.green : Color.gray)
                     .frame(width: 8, height: 8)
-                
+
                 Text(viewModel.isTracking ? "Tracking" : "Not tracking")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                
+
                 Spacer()
             }
-            
+
             // Timer display
             Text(viewModel.currentElapsedFormatted)
                 .font(.system(size: 42, weight: .light, design: .monospaced))
                 .foregroundStyle(viewModel.isTracking ? .primary : .secondary)
-            
+
             // Start/Stop button
             Button(action: handleTimerButton) {
                 HStack {
@@ -131,16 +140,16 @@ struct MenuBarView: View {
             .buttonStyle(.borderedProminent)
             .tint(viewModel.isTracking ? .red : .green)
             .controlSize(.large)
-            
+
             // Today's total
             HStack {
                 Text("Today:")
                     .foregroundStyle(.secondary)
                 Text(viewModel.todayTotalFormatted)
                     .fontWeight(.medium)
-                
+
                 Spacer()
-                
+
                 Text("Week:")
                     .foregroundStyle(.secondary)
                 Text(viewModel.thisWeekTotalFormatted)
@@ -150,23 +159,23 @@ struct MenuBarView: View {
         }
         .padding()
     }
-    
+
     // MARK: - Today Section
-    
+
     private var todaySection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text("Today's Entries")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.secondary)
-                
+
                 Spacer()
-                
+
                 Text("\(viewModel.todayEntries.count)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            
+
             if viewModel.todayEntries.isEmpty {
                 Text("No entries yet")
                     .font(.caption)
@@ -179,7 +188,7 @@ struct MenuBarView: View {
                         ForEach(viewModel.todayEntries.prefix(5)) { entry in
                             MenuBarEntryRow(entry: entry)
                         }
-                        
+
                         if viewModel.todayEntries.count > 5 {
                             Text("+ \(viewModel.todayEntries.count - 5) more")
                                 .font(.caption)
@@ -192,9 +201,9 @@ struct MenuBarView: View {
         }
         .padding()
     }
-    
+
     // MARK: - Actions Section
-    
+
     private var actionsSection: some View {
         VStack(spacing: 4) {
             // Preview Timesheet button
@@ -212,9 +221,7 @@ struct MenuBarView: View {
             .buttonStyle(.plain)
             .padding(.horizontal)
             .padding(.vertical, 8)
-            
-            Divider()
-            
+
             // Email with Embedded Timesheet
             Button {
                 sendEmailEmbedded()
@@ -228,7 +235,7 @@ struct MenuBarView: View {
             .buttonStyle(.plain)
             .padding(.horizontal)
             .padding(.vertical, 8)
-            
+
             // Email with CSV Attachment
             Button {
                 sendEmailWithAttachment()
@@ -242,9 +249,25 @@ struct MenuBarView: View {
             .buttonStyle(.plain)
             .padding(.horizontal)
             .padding(.vertical, 8)
-            
+
+            // Open History window
+            Button {
+                showTimesheet = false
+                showStopDialog = false
+                showHistoryWindow = true
+            } label: {
+                HStack {
+                    Image(systemName: "clock.arrow.circlepath")
+                    Text("Open History")
+                    Spacer()
+                }
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+
             Divider()
-            
+
             // Quit button
             Button {
                 NSApplication.shared.terminate(nil)
@@ -261,16 +284,16 @@ struct MenuBarView: View {
         }
         .padding(.vertical, 4)
     }
-    
+
     // MARK: - Email Actions
-    
+
     private func sendEmailEmbedded() {
         let timesheet = viewModel.generateTimesheet()
         let config = viewModel.configuration
         let userName = config.userName.isEmpty ? "Team Member" : config.userName
         let subject = "\(userName) - Timesheet for \(timesheet.periodDescription)"
         let body = generateEmailBodyDetailed(timesheet, userName: userName)
-        
+
         var components = URLComponents()
         components.scheme = "mailto"
         components.path = config.approverEmail
@@ -278,28 +301,28 @@ struct MenuBarView: View {
             URLQueryItem(name: "subject", value: subject),
             URLQueryItem(name: "body", value: body)
         ]
-        
+
         if let url = components.url {
             NSWorkspace.shared.open(url)
         }
     }
-    
+
     private func sendEmailWithAttachment() {
         let timesheet = viewModel.generateTimesheet()
         let config = viewModel.configuration
         let userName = config.userName.isEmpty ? "Team Member" : config.userName
-        
+
         // Generate CSV
         let csv = generateCSV(timesheet)
         let fileName = "Timesheet_\(formatFileDate(timesheet.periodStart))_to_\(formatFileDate(timesheet.periodEnd)).csv"
         let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
-        
+
         do {
             try csv.write(to: tempURL, atomically: true, encoding: .utf8)
-            
+
             let subject = "\(userName) - Timesheet for \(timesheet.periodDescription)"
             let body = generateEmailBodyShort(timesheet, userName: userName)
-            
+
             // Use NSSharingService for email with attachment
             if let service = NSSharingService(named: .composeEmail) {
                 service.recipients = config.approverEmail.isEmpty ? [] : [config.approverEmail]
@@ -310,11 +333,11 @@ struct MenuBarView: View {
             viewModel.errorMessage = "Failed to create CSV file: \(error.localizedDescription)"
         }
     }
-    
+
     private func generateEmailBodyDetailed(_ timesheet: Timesheet, userName: String) -> String {
         var body = "Hi,\n\n"
         body += "Please find my timesheet for \(timesheet.periodDescription).\n\n"
-        
+
         body += "SUMMARY\n"
         body += "═══════════════════════════════════════════\n"
         body += "Period:       \(timesheet.periodDescription)\n"
@@ -322,25 +345,25 @@ struct MenuBarView: View {
         let daysCount = Set(timesheet.entries.map { Calendar.current.startOfDay(for: $0.startTime) }).count
         body += "Total Days:   \(daysCount)\n"
         body += "═══════════════════════════════════════════\n\n"
-        
+
         body += "DETAILED TIME ENTRIES\n"
         body += "───────────────────────────────────────────\n"
-        
+
         let grouped = timesheet.entries.groupedByDate()
         let sortedDates = grouped.keys.sorted()
         let dayFormatter = DateFormatter()
         dayFormatter.dateFormat = "EEE, MMM d"
-        
+
         for date in sortedDates {
             guard let dayEntries = grouped[date] else { continue }
             let dayTotal = dayEntries.totalDuration / 3600.0
-            
+
             body += "\n\(dayFormatter.string(from: date))                    Total: \(String(format: "%.1fh", dayTotal))\n"
             body += "───────────────────────────────────────────\n"
-            
+
             let timeFormatter = DateFormatter()
             timeFormatter.timeStyle = .short
-            
+
             for entry in dayEntries {
                 let desc = entry.description.isEmpty ? "(No description)" : entry.description
                 let start = timeFormatter.string(from: entry.startTime)
@@ -349,17 +372,17 @@ struct MenuBarView: View {
                 body += "\(timeRange.padding(toLength: 18, withPad: " ", startingAt: 0)) \(entry.formattedDuration.padding(toLength: 8, withPad: " ", startingAt: 0)) \(desc)\n"
             }
         }
-        
+
         body += "\n═══════════════════════════════════════════\n"
         body += "GRAND TOTAL: \(timesheet.formattedTotalHours)\n"
         body += "═══════════════════════════════════════════\n"
-        
+
         body += "\nPlease let me know if you have any questions.\n\n"
         body += "Best regards,\n\(userName)"
-        
+
         return body
     }
-    
+
     private func generateEmailBodyShort(_ timesheet: Timesheet, userName: String) -> String {
         var body = "Hi,\n\n"
         body += "Please find my timesheet attached for the period \(timesheet.periodDescription).\n\n"
@@ -372,19 +395,19 @@ struct MenuBarView: View {
         body += "Best regards,\n\(userName)"
         return body
     }
-    
+
     private func generateCSV(_ timesheet: Timesheet) -> String {
         var csv = "Date,Start Time,End Time,Duration (hours),Description,Project\n"
-        
+
         // Use explicit formats to avoid encoding issues with AM/PM
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
+
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "HH:mm"  // 24-hour format
         timeFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
+
         for entry in timesheet.entries {
             let date = dateFormatter.string(from: entry.startTime)
             let startTime = timeFormatter.string(from: entry.startTime)
@@ -395,24 +418,24 @@ struct MenuBarView: View {
                 .replacingOccurrences(of: "\"", with: "\"\"")
             let project = (entry.projectName ?? "")
                 .replacingOccurrences(of: "\"", with: "\"\"")
-            
+
             csv += "\(date),\(startTime),\(endTime),\(duration),\"\(description)\",\"\(project)\"\n"
         }
-        
+
         csv += "\nTotal Hours:,\(String(format: "%.2f", timesheet.totalHours))\n"
         csv += "Period:,\"\(timesheet.periodDescription)\"\n"
-        
+
         return csv
     }
-    
+
     private func formatFileDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter.string(from: date)
     }
-    
+
     // MARK: - Actions
-    
+
     private func handleTimerButton() {
         if viewModel.isTracking {
             showStopDialog = true
@@ -427,7 +450,7 @@ struct MenuBarView: View {
 struct TimesheetInlineView: View {
     @ObservedObject var viewModel: TimeTrackingViewModel
     @State private var timesheet: Timesheet?
-    
+
     var body: some View {
         ScrollView {
             if let timesheet = timesheet {
@@ -439,21 +462,21 @@ struct TimesheetInlineView: View {
                             .font(.subheadline)
                     }
                     .foregroundStyle(.secondary)
-                    
+
                     // Stats
                     HStack(spacing: 12) {
                         StatBox(title: "Hours", value: timesheet.formattedTotalHours)
                         StatBox(title: "Entries", value: "\(timesheet.entries.count)")
                         StatBox(title: "Days", value: "\(uniqueDaysCount(timesheet))")
                     }
-                    
+
                     Divider()
-                    
+
                     // Entries
                     Text("Entries")
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(.secondary)
-                    
+
                     if timesheet.entries.isEmpty {
                         Text("No entries for this period")
                             .font(.caption)
@@ -472,7 +495,7 @@ struct TimesheetInlineView: View {
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
-                                
+
                                 ForEach(grouped[date] ?? []) { entry in
                                     HStack {
                                         Text(entry.displayDescription ?? "No description")
@@ -503,17 +526,17 @@ struct TimesheetInlineView: View {
             timesheet = viewModel.generateTimesheet()
         }
     }
-    
+
     private func uniqueDaysCount(_ timesheet: Timesheet) -> Int {
         Set(timesheet.entries.map { Calendar.current.startOfDay(for: $0.startTime) }).count
     }
-    
+
     private func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE, MMM d"
         return formatter.string(from: date)
     }
-    
+
     private func dayTotal(for date: Date, grouped: [Date: [TimeEntry]]) -> String {
         let entries = grouped[date] ?? []
         let hours = entries.totalDuration / 3600.0
@@ -524,7 +547,7 @@ struct TimesheetInlineView: View {
 struct StatBox: View {
     let title: String
     let value: String
-    
+
     var body: some View {
         VStack(spacing: 4) {
             Text(value)
@@ -544,7 +567,7 @@ struct StatBox: View {
 
 struct MenuBarEntryRow: View {
     let entry: TimeEntry
-    
+
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
@@ -552,14 +575,14 @@ struct MenuBarEntryRow: View {
                     .font(.caption)
                     .lineLimit(1)
                     .foregroundStyle(entry.displayDescription == nil ? .secondary : .primary)
-                
+
                 Text(formatTimeRange())
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
-            
+
             Spacer()
-            
+
             Text(entry.formattedDuration)
                 .font(.caption.monospacedDigit())
                 .foregroundStyle(.secondary)
@@ -569,14 +592,14 @@ struct MenuBarEntryRow: View {
         .background(Color.gray.opacity(0.05))
         .clipShape(RoundedRectangle(cornerRadius: 6))
     }
-    
+
     private func formatTimeRange() -> String {
         let formatter = DateFormatter()
         formatter.timeStyle = .short
-        
+
         let start = formatter.string(from: entry.startTime)
         let end = entry.endTime.map { formatter.string(from: $0) } ?? "now"
-        
+
         return "\(start) - \(end)"
     }
 }
@@ -588,33 +611,33 @@ struct StopTimerInline: View {
     @Binding var description: String
     @Binding var projectName: String
     @Binding var isPresented: Bool
-    
+
     var body: some View {
         VStack(spacing: 16) {
             Text("Stop Timer")
                 .font(.headline)
-            
+
             Text("Duration: \(viewModel.currentElapsedFormatted)")
                 .font(.title2.monospacedDigit())
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Description")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                
+
                 TextField("What did you work on?", text: $description)
                     .textFieldStyle(.roundedBorder)
             }
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Project (optional)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                
+
                 TextField("Project name", text: $projectName)
                     .textFieldStyle(.roundedBorder)
             }
-            
+
             HStack {
                 Button("Cancel") {
                     description = ""
@@ -622,9 +645,9 @@ struct StopTimerInline: View {
                     isPresented = false
                 }
                 .keyboardShortcut(.escape)
-                
+
                 Spacer()
-                
+
                 Button("Discard") {
                     viewModel.cancelTracking()
                     description = ""
@@ -632,7 +655,7 @@ struct StopTimerInline: View {
                     isPresented = false
                 }
                 .foregroundStyle(.red)
-                
+
                 Button("Save") {
                     viewModel.stopClock(
                         description: description,
@@ -655,6 +678,18 @@ struct StopTimerInline: View {
 struct MenuBarView_Previews: PreviewProvider {
     static var previews: some View {
         MenuBarView(viewModel: .preview)
+    }
+}
+#endif
+#if os(macOS)
+import AppKit
+extension NSApplication {
+    static func openHistoryWindow(viewModel: TimeTrackingViewModel) {
+        let vc = NSHostingController(rootView: EntryListView(viewModel: viewModel))
+        let window = NSWindow(contentViewController: vc)
+        window.title = "History"
+        window.setContentSize(NSSize(width: 520, height: 600))
+        window.makeKeyAndOrderFront(nil)
     }
 }
 #endif

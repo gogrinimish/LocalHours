@@ -6,12 +6,12 @@ import SkipUI
 @main
 struct LocalHoursApp: App {
     @StateObject private var viewModel = TimeTrackingViewModel()
-    
+
     init() {
         // Restore security-scoped bookmark on app launch
         restoreStorageFolderAccess()
     }
-    
+
     var body: some Scene {
         WindowGroup {
             ContentView(viewModel: viewModel)
@@ -26,10 +26,10 @@ struct LocalHoursApp: App {
                 }
         }
     }
-    
+
     private func handleURL(_ url: URL) {
         guard url.scheme == "localhours" else { return }
-        
+
         switch url.host {
         case "stop":
             // Widget requested to stop timer - show stop dialog
@@ -40,7 +40,7 @@ struct LocalHoursApp: App {
             break
         }
     }
-    
+
     /// Restores access to the previously selected storage folder using a security-scoped bookmark.
     private func restoreStorageFolderAccess() {
         let sharedDefaults = UserDefaults(suiteName: "group.com.localhours.shared") ?? .standard
@@ -63,7 +63,7 @@ struct LocalHoursApp: App {
             // IMPORTANT: Set the storage folder on the shared StorageService
             // This ensures the ViewModel uses the correct folder when it initializes
             try? StorageService.shared.setStorageFolder(url: url)
-            
+
             // If bookmark is stale, save a fresh one
             if isStale {
                 if let newBookmark = try? url.bookmarkData(

@@ -6,15 +6,15 @@ import SkipUI
 /// Displays a list of time entries
 public struct EntryListView: View {
     @ObservedObject var viewModel: TimeTrackingViewModel
-    
+
     @State private var selectedEntry: TimeEntry?
     @State private var showDeleteConfirmation = false
     @State private var entryToDelete: TimeEntry?
-    
+
     public init(viewModel: TimeTrackingViewModel) {
         self.viewModel = viewModel
     }
-    
+
     public var body: some View {
         Group {
             if viewModel.allEntries.isEmpty {
@@ -40,18 +40,18 @@ public struct EntryListView: View {
             EntryDetailView(entry: entry, viewModel: viewModel)
         }
     }
-    
+
     // MARK: - Subviews
-    
+
     private var emptyState: some View {
         VStack(spacing: 16) {
             Image(systemName: "clock")
                 .font(.system(size: 48))
                 .foregroundStyle(.secondary)
-            
+
             Text("No time entries yet")
                 .font(.headline)
-            
+
             Text("Start tracking time to see your entries here")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
@@ -59,13 +59,13 @@ public struct EntryListView: View {
         }
         .padding()
     }
-    
+
     private var entryList: some View {
         List {
             ForEach(groupedEntries.keys.sorted().reversed(), id: \.self) { date in
                 Section {
                     ForEach(groupedEntries[date] ?? []) { entry in
-                        EntryRowView(entry: entry)
+                        EntryRowView(entry: entry, viewModel: viewModel)
                             .contentShape(Rectangle())
                             .onTapGesture {
                                 selectedEntry = entry
@@ -96,27 +96,29 @@ public struct EntryListView: View {
         .listStyle(.inset)
         #endif
     }
-    
+
     // MARK: - Helpers
-    
+
     private var groupedEntries: [Date: [TimeEntry]] {
         viewModel.allEntries.groupedByDate()
     }
-    
+
     private func formatSectionDate(_ date: Date) -> String {
         let calendar = Calendar.current
-        
+        let tz = viewModel.configuration.timezone
+
         if calendar.isDateInToday(date) {
             return "Today"
         } else if calendar.isDateInYesterday(date) {
             return "Yesterday"
         } else {
             let formatter = DateFormatter()
+            formatter.timeZone = tz
             formatter.dateStyle = .medium
             return formatter.string(from: date)
         }
     }
-    
+
     private func formatDayTotal(for date: Date) -> String {
         let entries = groupedEntries[date] ?? []
         let total = entries.totalDuration
@@ -129,11 +131,13 @@ public struct EntryListView: View {
 /// Row view for a single time entry
 public struct EntryRowView: View {
     let entry: TimeEntry
-    
-    public init(entry: TimeEntry) {
+    let viewModel: TimeTrackingViewModel
+
+    public init(entry: TimeEntry, viewModel: TimeTrackingViewModel) {
         self.entry = entry
+        self.viewModel = viewModel
     }
-    
+
     public var body: some View {
         HStack(alignment: .top, spacing: 12) {
             // Time indicator
@@ -141,7 +145,7 @@ public struct EntryRowView: View {
                 Circle()
                     .fill(entry.isActive ? Color.green : Color.blue)
                     .frame(width: 10, height: 10)
-                
+
                 if !entry.isActive {
                     Rectangle()
                         .fill(Color.gray.opacity(0.3))
@@ -149,7 +153,7 @@ public struct EntryRowView: View {
                 }
             }
             .frame(width: 10)
-            
+
             // Content
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
@@ -157,20 +161,20 @@ public struct EntryRowView: View {
                         .font(.body)
                         .foregroundStyle(entry.displayDescription == nil ? .secondary : .primary)
                         .lineLimit(2)
-                    
+
                     Spacer()
-                    
+
                     Text(entry.formattedDuration)
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(.secondary)
                 }
-                
+
                 HStack(spacing: 8) {
                     // Time range
                     Text(formatTimeRange())
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    
+
                     // Project badge
                     if let project = entry.projectName {
                         Text(project)
@@ -181,7 +185,7 @@ public struct EntryRowView: View {
                             .foregroundStyle(.blue)
                             .clipShape(Capsule())
                     }
-                    
+
                     // Active indicator
                     if entry.isActive {
                         Text("In Progress")
@@ -197,19 +201,27 @@ public struct EntryRowView: View {
         }
         .padding(.vertical, 4)
     }
-    
+
     private func formatTimeRange() -> String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        
-        let start = formatter.string(from: entry.startTime)
-        
-        if let endTime = entry.endTime {
-            let end = formatter.string(from: endTime)
+        if let clockIn = entry.clockIn {
+            // Prefer stored local timestamp with offset for start
+            let start = clockIn.timestamp
+            if let clockOut = entry.clockOut {
+                // Prefer stored local timestamp with offset for end
+                let end = clockOut.timestamp
+                return "\(start) - \(end)"
+            } else {
+                return "\(start) - now"
+            }
+        } else {
+            // Fallback to formatting UTC using configured timezone
+            let formatter = DateFormatter()
+            formatter.timeStyle = .short
+            formatter.timeZone = TimeZone(identifier: viewModel.configuration.timezoneIdentifier) ?? .current
+            let start = formatter.string(from: entry.startTime)
+            let end = entry.endTime.map { formatter.string(from: $0) } ?? "now"
             return "\(start) - \(end)"
         }
-        
-        return "\(start) - now"
     }
 }
 

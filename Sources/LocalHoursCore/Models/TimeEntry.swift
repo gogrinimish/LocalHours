@@ -5,13 +5,24 @@ import SkipFoundation
 
 /// Represents a single time entry with start/end times and description
 public struct TimeEntry: Codable, Identifiable, Hashable {
+    public struct WallClockEvent: Codable, Hashable {
+        public var timestamp: String   // ISO 8601 with offset (local time)
+        public var timezone: String    // IANA timezone identifier
+        public init(timestamp: String, timezone: String) {
+            self.timestamp = timestamp
+            self.timezone = timezone
+        }
+    }
+
     public var id: UUID
     public var startTime: Date
     public var endTime: Date?
     public var description: String
     public var projectName: String?
     public var tags: [String]
-    
+    public var clockIn: WallClockEvent?
+    public var clockOut: WallClockEvent?
+
     /// Duration in seconds
     public var duration: TimeInterval {
         guard let endTime = endTime else {
@@ -19,7 +30,7 @@ public struct TimeEntry: Codable, Identifiable, Hashable {
         }
         return endTime.timeIntervalSince(startTime)
     }
-    
+
     /// Duration formatted as hours and minutes
     public var formattedDuration: String {
         let hours = Int(duration) / 3600
@@ -29,12 +40,12 @@ public struct TimeEntry: Codable, Identifiable, Hashable {
         }
         return "\(minutes)m"
     }
-    
+
     /// Whether this entry is currently active (no end time)
     public var isActive: Bool {
         endTime == nil
     }
-    
+
     /// Returns the best available description for display purposes.
     /// Prefers `description`, falls back to `projectName`, or returns nil if both are empty.
     public var displayDescription: String? {
@@ -46,14 +57,16 @@ public struct TimeEntry: Codable, Identifiable, Hashable {
         }
         return nil
     }
-    
+
     public init(
         id: UUID = UUID(),
         startTime: Date = Date(),
         endTime: Date? = nil,
         description: String = "",
         projectName: String? = nil,
-        tags: [String] = []
+        tags: [String] = [],
+        clockIn: WallClockEvent? = nil,
+        clockOut: WallClockEvent? = nil
     ) {
         self.id = id
         self.startTime = startTime
@@ -61,8 +74,10 @@ public struct TimeEntry: Codable, Identifiable, Hashable {
         self.description = description
         self.projectName = projectName
         self.tags = tags
+        self.clockIn = clockIn
+        self.clockOut = clockOut
     }
-    
+
     /// Stop this time entry
     public mutating func stop(withDescription description: String) {
         self.endTime = Date()
@@ -77,26 +92,26 @@ public extension Array where Element == TimeEntry {
     var totalDuration: TimeInterval {
         reduce(0) { $0 + $1.duration }
     }
-    
+
     /// Formatted total duration
     var formattedTotalDuration: String {
         let hours = Int(totalDuration) / 3600
         let minutes = (Int(totalDuration) % 3600) / 60
         return "\(hours)h \(minutes)m"
     }
-    
+
     /// Filter entries for a specific date
     func entries(for date: Date, in calendar: Calendar = .current) -> [TimeEntry] {
         filter { calendar.isDate($0.startTime, inSameDayAs: date) }
     }
-    
+
     /// Filter entries for a date range
     func entries(from startDate: Date, to endDate: Date) -> [TimeEntry] {
         filter { entry in
             entry.startTime >= startDate && entry.startTime <= endDate
         }
     }
-    
+
     /// Group entries by date
     func groupedByDate(calendar: Calendar = .current) -> [Date: [TimeEntry]] {
         var result: [Date: [TimeEntry]] = [:]

@@ -3,10 +3,21 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		175A7C452F691DBC000C27FB /* TimeTrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175A7C442F691DBB000C27FB /* TimeTrackingTests.swift */; };
+		175A7C612F6922FE000C27FB /* TimeTrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175A7C442F691DBB000C27FB /* TimeTrackingTests.swift */; };
+		175A7C642F6924DE000C27FB /* TimeTrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175A7C442F691DBB000C27FB /* TimeTrackingTests.swift */; };
+		175A7C652F6924EA000C27FB /* TimeTrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175A7C442F691DBB000C27FB /* TimeTrackingTests.swift */; };
+		177BFF0E3016743E00A6F649 /* TimesheetTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177BFF0C3016743E00A6F649 /* TimesheetTab.swift */; };
+		177BFF0F3016743E00A6F649 /* AppIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177BFF043016743E00A6F649 /* AppIntents.swift */; };
+		177BFF103016743E00A6F649 /* HistoryTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177BFF063016743E00A6F649 /* HistoryTab.swift */; };
+		177BFF113016743E00A6F649 /* LocalHoursApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177BFF093016743E00A6F649 /* LocalHoursApp.swift */; };
+		177BFF123016743E00A6F649 /* TimerTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177BFF0B3016743E00A6F649 /* TimerTab.swift */; };
+		177BFF133016743E00A6F649 /* SettingsTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177BFF0A3016743E00A6F649 /* SettingsTab.swift */; };
+		177BFF143016743E00A6F649 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177BFF053016743E00A6F649 /* ContentView.swift */; };
 		17CF57262F2B1E2800C4F2C0 /* TimeEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4000001000 /* TimeEntry.swift */; };
 		17CF57272F2B1E2800C4F2C0 /* Timesheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4000001002 /* Timesheet.swift */; };
 		17CF57282F2B1E2800C4F2C0 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4000001004 /* AppConfiguration.swift */; };
@@ -23,13 +34,6 @@
 		17CF57332F2B1E2800C4F2C0 /* TimeEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4000001000 /* TimeEntry.swift */; };
 		17CF57342F2B1E2800C4F2C0 /* Timesheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4000001002 /* Timesheet.swift */; };
 		17CF57352F2B1E2800C4F2C0 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4000001004 /* AppConfiguration.swift */; };
-		A1000001001 /* LocalHoursApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000 /* LocalHoursApp.swift */; };
-		A1000001003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001002 /* ContentView.swift */; };
-		A1000001005 /* TimerTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001004 /* TimerTab.swift */; };
-		A1000001007 /* HistoryTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001006 /* HistoryTab.swift */; };
-		A1000001009 /* TimesheetTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001008 /* TimesheetTab.swift */; };
-		A1000001011 /* SettingsTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001010 /* SettingsTab.swift */; };
-		A1000001013 /* AppIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001012 /* AppIntents.swift */; };
 		A1000001015 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1000001014 /* Assets.xcassets */; };
 		A2000001001 /* LocalHoursMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000001000 /* LocalHoursMacApp.swift */; };
 		A2000001003 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000001002 /* MenuBarView.swift */; };
@@ -56,6 +60,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		175A7C4E2F6921F8000C27FB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A0000000100 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A1000000001;
+			remoteInfo = LocalHours;
+		};
+		175A7C5B2F692221000C27FB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A0000000100 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A2000000001;
+			remoteInfo = LocalHoursMac;
+		};
 		A5000000002 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A0000000100 /* Project object */;
@@ -80,16 +98,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		175A7C442F691DBB000C27FB /* TimeTrackingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTrackingTests.swift; sourceTree = "<group>"; };
+		175A7C4A2F6921F8000C27FB /* LocalHoursTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LocalHoursTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		175A7C572F692221000C27FB /* LocalHoursTestsMac.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LocalHoursTestsMac.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		177BFF043016743E00A6F649 /* AppIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntents.swift; sourceTree = "<group>"; };
+		177BFF053016743E00A6F649 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		177BFF063016743E00A6F649 /* HistoryTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTab.swift; sourceTree = "<group>"; };
+		177BFF073016743E00A6F649 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		177BFF083016743E00A6F649 /* LocalHours.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LocalHours.entitlements; sourceTree = "<group>"; };
+		177BFF093016743E00A6F649 /* LocalHoursApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalHoursApp.swift; sourceTree = "<group>"; };
+		177BFF0A3016743E00A6F649 /* SettingsTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTab.swift; sourceTree = "<group>"; };
+		177BFF0B3016743E00A6F649 /* TimerTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTab.swift; sourceTree = "<group>"; };
+		177BFF0C3016743E00A6F649 /* TimesheetTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimesheetTab.swift; sourceTree = "<group>"; };
 		A1000000000 /* LocalHours.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocalHours.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1000001000 /* LocalHoursApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalHoursApp.swift; sourceTree = "<group>"; };
-		A1000001002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		A1000001004 /* TimerTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTab.swift; sourceTree = "<group>"; };
-		A1000001006 /* HistoryTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTab.swift; sourceTree = "<group>"; };
-		A1000001008 /* TimesheetTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimesheetTab.swift; sourceTree = "<group>"; };
-		A1000001010 /* SettingsTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTab.swift; sourceTree = "<group>"; };
-		A1000001012 /* AppIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntents.swift; sourceTree = "<group>"; };
 		A1000001014 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A1000001016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2000000000 /* Local Hours.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Local Hours.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2000001000 /* LocalHoursMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalHoursMacApp.swift; sourceTree = "<group>"; };
 		A2000001002 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
@@ -113,37 +135,60 @@
 		A4000001020 /* ConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationView.swift; sourceTree = "<group>"; };
 		A4000001022 /* TimesheetPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimesheetPreviewView.swift; sourceTree = "<group>"; };
 		A4000001024 /* PlatformServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformServices.swift; sourceTree = "<group>"; };
-		A5000000010 /* LocalHours.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LocalHours.entitlements; sourceTree = "<group>"; };
 		A5000000011 /* LocalHoursWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LocalHoursWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		175A7C4B2F6921F8000C27FB /* LocalHoursTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = LocalHoursTests; sourceTree = "<group>"; };
+		175A7C582F692221000C27FB /* LocalHoursTestsMac */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = LocalHoursTestsMac; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		175A7C472F6921F8000C27FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		175A7C542F692221000C27FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
+		177BFF0D3016743E00A6F649 /* LocalHours */ = {
+			isa = PBXGroup;
+			children = (
+				177BFF043016743E00A6F649 /* AppIntents.swift */,
+				177BFF053016743E00A6F649 /* ContentView.swift */,
+				177BFF063016743E00A6F649 /* HistoryTab.swift */,
+				177BFF073016743E00A6F649 /* Info.plist */,
+				177BFF083016743E00A6F649 /* LocalHours.entitlements */,
+				177BFF093016743E00A6F649 /* LocalHoursApp.swift */,
+				177BFF0A3016743E00A6F649 /* SettingsTab.swift */,
+				177BFF0B3016743E00A6F649 /* TimerTab.swift */,
+				177BFF0C3016743E00A6F649 /* TimesheetTab.swift */,
+			);
+			path = LocalHours;
+			sourceTree = "<group>";
+		};
 		A0000000000 = {
 			isa = PBXGroup;
 			children = (
-				A0000000001 /* LocalHours */,
+				177BFF0D3016743E00A6F649 /* LocalHours */,
 				A0000000002 /* LocalHoursMac */,
 				A0000000003 /* LocalHoursWidget */,
 				A0000000004 /* Sources */,
 				A0000000005 /* Assets */,
+				175A7C4B2F6921F8000C27FB /* LocalHoursTests */,
+				175A7C582F692221000C27FB /* LocalHoursTestsMac */,
 				A0000000006 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		A0000000001 /* LocalHours */ = {
-			isa = PBXGroup;
-			children = (
-				A5000000010 /* LocalHours.entitlements */,
-				A1000001000 /* LocalHoursApp.swift */,
-				A1000001002 /* ContentView.swift */,
-				A1000001004 /* TimerTab.swift */,
-				A1000001006 /* HistoryTab.swift */,
-				A1000001008 /* TimesheetTab.swift */,
-				A1000001010 /* SettingsTab.swift */,
-				A1000001012 /* AppIntents.swift */,
-				A1000001016 /* Info.plist */,
-			);
-			path = LocalHours;
 			sourceTree = "<group>";
 		};
 		A0000000002 /* LocalHoursMac */ = {
@@ -153,6 +198,7 @@
 				A2000001002 /* MenuBarView.swift */,
 				A2000001004 /* SettingsView.swift */,
 				A2000001006 /* Info.plist */,
+				175A7C442F691DBB000C27FB /* TimeTrackingTests.swift */,
 			);
 			path = LocalHoursMac;
 			sourceTree = "<group>";
@@ -191,6 +237,8 @@
 				A1000000000 /* LocalHours.app */,
 				A2000000000 /* Local Hours.app */,
 				A3000000000 /* LocalHoursWidgetExtension.appex */,
+				175A7C4A2F6921F8000C27FB /* LocalHoursTests.xctest */,
+				175A7C572F692221000C27FB /* LocalHoursTestsMac.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -258,6 +306,52 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		175A7C492F6921F8000C27FB /* LocalHoursTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 175A7C502F6921F8000C27FB /* Build configuration list for PBXNativeTarget "LocalHoursTests" */;
+			buildPhases = (
+				175A7C462F6921F8000C27FB /* Sources */,
+				175A7C472F6921F8000C27FB /* Frameworks */,
+				175A7C482F6921F8000C27FB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				175A7C4F2F6921F8000C27FB /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				175A7C4B2F6921F8000C27FB /* LocalHoursTests */,
+			);
+			name = LocalHoursTests;
+			packageProductDependencies = (
+			);
+			productName = LocalHoursTests;
+			productReference = 175A7C4A2F6921F8000C27FB /* LocalHoursTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		175A7C562F692221000C27FB /* LocalHoursTestsMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 175A7C5D2F692221000C27FB /* Build configuration list for PBXNativeTarget "LocalHoursTestsMac" */;
+			buildPhases = (
+				175A7C532F692221000C27FB /* Sources */,
+				175A7C542F692221000C27FB /* Frameworks */,
+				175A7C552F692221000C27FB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				175A7C5C2F692221000C27FB /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				175A7C582F692221000C27FB /* LocalHoursTestsMac */,
+			);
+			name = LocalHoursTestsMac;
+			packageProductDependencies = (
+			);
+			productName = LocalHoursTestsMac;
+			productReference = 175A7C572F692221000C27FB /* LocalHoursTestsMac.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		A1000000001 /* LocalHours */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1000000010 /* Build configuration list for PBXNativeTarget "LocalHours" */;
@@ -315,9 +409,17 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1600;
+				LastSwiftUpdateCheck = 2630;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
+					175A7C492F6921F8000C27FB = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = A1000000001;
+					};
+					175A7C562F692221000C27FB = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = A2000000001;
+					};
 					A1000000001 = {
 						CreatedOnToolsVersion = 16.0;
 					};
@@ -345,11 +447,27 @@
 				A1000000001 /* LocalHours */,
 				A2000000001 /* LocalHoursMac */,
 				A3000000001 /* LocalHoursWidgetExtension */,
+				175A7C492F6921F8000C27FB /* LocalHoursTests */,
+				175A7C562F692221000C27FB /* LocalHoursTestsMac */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		175A7C482F6921F8000C27FB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		175A7C552F692221000C27FB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A1000000003 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -377,17 +495,33 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		175A7C462F6921F8000C27FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				175A7C642F6924DE000C27FB /* TimeTrackingTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		175A7C532F692221000C27FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				175A7C612F6922FE000C27FB /* TimeTrackingTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A1000000002 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1000001001 /* LocalHoursApp.swift in Sources */,
-				A1000001003 /* ContentView.swift in Sources */,
-				A1000001005 /* TimerTab.swift in Sources */,
-				A1000001007 /* HistoryTab.swift in Sources */,
-				A1000001009 /* TimesheetTab.swift in Sources */,
-				A1000001011 /* SettingsTab.swift in Sources */,
-				A1000001013 /* AppIntents.swift in Sources */,
+				177BFF0E3016743E00A6F649 /* TimesheetTab.swift in Sources */,
+				177BFF0F3016743E00A6F649 /* AppIntents.swift in Sources */,
+				177BFF103016743E00A6F649 /* HistoryTab.swift in Sources */,
+				177BFF113016743E00A6F649 /* LocalHoursApp.swift in Sources */,
+				177BFF123016743E00A6F649 /* TimerTab.swift in Sources */,
+				177BFF133016743E00A6F649 /* SettingsTab.swift in Sources */,
+				177BFF143016743E00A6F649 /* ContentView.swift in Sources */,
 				A4000001001 /* TimeEntry.swift in Sources */,
 				A4000001003 /* Timesheet.swift in Sources */,
 				A4000001005 /* AppConfiguration.swift in Sources */,
@@ -443,6 +577,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		175A7C4F2F6921F8000C27FB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A1000000001 /* LocalHours */;
+			targetProxy = 175A7C4E2F6921F8000C27FB /* PBXContainerItemProxy */;
+		};
+		175A7C5C2F692221000C27FB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A2000000001 /* LocalHoursMac */;
+			targetProxy = 175A7C5B2F692221000C27FB /* PBXContainerItemProxy */;
+		};
 		A5000000004 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A3000000001 /* LocalHoursWidgetExtension */;
@@ -451,6 +595,97 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		175A7C512F6921F8000C27FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q8GTNJD9W6;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Gogri.LocalHoursTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LocalHours.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LocalHours";
+			};
+			name = Debug;
+		};
+		175A7C522F6921F8000C27FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q8GTNJD9W6;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Gogri.LocalHoursTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LocalHours.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LocalHours";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		175A7C5E2F692221000C27FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q8GTNJD9W6;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Gogri.LocalHoursTestsMac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Local Hours.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Local Hours";
+			};
+			name = Debug;
+		};
+		175A7C5F2F692221000C27FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q8GTNJD9W6;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Gogri.LocalHoursTestsMac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Local Hours.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Local Hours";
+			};
+			name = Release;
+		};
 		A0000000102 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -581,9 +816,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LocalHours/Info.plist;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Local Hours";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -591,7 +827,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.localhours.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -611,9 +847,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LocalHours/Info.plist;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Local Hours";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -621,7 +858,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.localhours.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -642,7 +879,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -669,7 +906,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.localhours.app;
 				PRODUCT_NAME = "Local Hours";
 				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
@@ -694,7 +931,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -721,7 +958,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.localhours.app;
 				PRODUCT_NAME = "Local Hours";
 				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
@@ -746,7 +983,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LocalHoursWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LocalHoursWidget;
+				INFOPLIST_KEY_CFBundleDisplayName = "Local Hours";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -754,7 +991,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.localhours.app.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -775,7 +1012,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LocalHoursWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LocalHoursWidget;
+				INFOPLIST_KEY_CFBundleDisplayName = "Local Hours";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -783,7 +1020,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.localhours.app.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -798,6 +1035,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		175A7C502F6921F8000C27FB /* Build configuration list for PBXNativeTarget "LocalHoursTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				175A7C512F6921F8000C27FB /* Debug */,
+				175A7C522F6921F8000C27FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		175A7C5D2F692221000C27FB /* Build configuration list for PBXNativeTarget "LocalHoursTestsMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				175A7C5E2F692221000C27FB /* Debug */,
+				175A7C5F2F692221000C27FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A0000000101 /* Build configuration list for PBXProject "LocalHours" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

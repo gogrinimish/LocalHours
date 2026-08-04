@@ -11,33 +11,33 @@ import WidgetKit
 
 /// View model for time tracking: start/stop clock, entries, timesheet generation, and configuration.
 public final class TimeTrackingViewModel: ObservableObject {
-    
+
     // MARK: - Dependencies
-    
+
     private let storageService: StorageServiceProtocol
     private let notificationService: NotificationServiceProtocol
     private let emailService: EmailServiceProtocol
-    
+
     // MARK: - Published State
-    
+
     @Published public private(set) var configuration: AppConfiguration
     @Published public private(set) var allEntries: [TimeEntry] = []
     @Published public private(set) var currentEntry: TimeEntry?
     @Published public var errorMessage: String?
     /// Set by app when opened via widget "stop" URL to show the stop-timer sheet (iOS).
     @Published public var showStopDialogFromWidget: Bool = false
-    
+
     private var timerCancellable: AnyCancellable?
     private var fileSyncCancellable: AnyCancellable?
     private let calendar: Calendar
-    
+
     /// Interval for checking if storage files changed (cross-device sync)
     private let fileSyncInterval: TimeInterval = 5.0
-    
+
     // MARK: - Computed Properties
-    
+
     public var isTracking: Bool { currentEntry != nil }
-    
+
     public var currentElapsedFormatted: String {
         guard let entry = currentEntry else { return "0:00" }
         let seconds = Int(entry.duration)
@@ -49,11 +49,11 @@ public final class TimeTrackingViewModel: ObservableObject {
         }
         return String(format: "%d:%02d", mins, seconds % 60)
     }
-    
+
     public var todayEntries: [TimeEntry] {
         allEntries.entries(for: Date(), in: calendar)
     }
-    
+
     public var todayTotalFormatted: String {
         let total = todayEntries.totalDuration
         let hours = Int(total) / 3600
@@ -63,7 +63,7 @@ public final class TimeTrackingViewModel: ObservableObject {
         }
         return String(format: "%dm", minutes)
     }
-    
+
     public var thisWeekTotalFormatted: String {
         let calendar = self.calendar
         let now = Date()
@@ -80,14 +80,14 @@ public final class TimeTrackingViewModel: ObservableObject {
         }
         return String(format: "%dm", minutes)
     }
-    
+
     /// True when storage folder is set (iOS setup flow).
     public var isSetupComplete: Bool {
         storageService.getStorageFolderURL() != nil
     }
-    
+
     // MARK: - Init
-    
+
     public init(
         storageService: StorageServiceProtocol? = nil,
         notificationService: NotificationServiceProtocol? = nil,
@@ -100,14 +100,14 @@ public final class TimeTrackingViewModel: ObservableObject {
         self.calendar = Calendar.current
         loadFromStorageIfAvailable()
     }
-    
+
     /// Preview instance for SwiftUI previews
     public static var preview: TimeTrackingViewModel {
         let vm = TimeTrackingViewModel()
         vm.loadPreviewData()
         return vm
     }
-    
+
     private func loadPreviewData() {
         let now = Date()
         allEntries = [
@@ -120,9 +120,9 @@ public final class TimeTrackingViewModel: ObservableObject {
             userName: "Preview User"
         )
     }
-    
+
     // MARK: - Storage
-    
+
     private func loadFromStorageIfAvailable() {
         guard let url = storageService.getStorageFolderURL() else { return }
         let path = url.path
@@ -132,13 +132,15 @@ public final class TimeTrackingViewModel: ObservableObject {
             configuration = try storageService.loadConfiguration()
             configuration.storageFolder = path
             let loaded = try storageService.loadTimeEntries()
-            applyLoadedEntries(loaded)
+            var mutableLoaded = loaded
+            backfillWallClockIfNeeded(for: &mutableLoaded)
+            applyLoadedEntries(mutableLoaded)
             saveTimesheetForCurrentPeriodIfDue()
         } catch {
             errorMessage = error.localizedDescription
         }
     }
-    
+
     /// Splits loaded entries into completed (allEntries) and in-progress (currentEntry).
     /// When another device started the timer, the in-progress entry is in storage with endTime == nil.
     private func applyLoadedEntries(_ entries: [TimeEntry]) {
@@ -161,7 +163,7 @@ public final class TimeTrackingViewModel: ObservableObject {
         // Keep widget in sync
         syncStateToWidget()
     }
-    
+
     public func setupStorage(path: String) async throws {
         try storageService.setStorageFolder(path)
         try await finishSetupStorage(path: path)
@@ -176,17 +178,21 @@ public final class TimeTrackingViewModel: ObservableObject {
     private func finishSetupStorage(path: String) async throws {
         let config = try storageService.loadConfiguration()
         let entries = try storageService.loadTimeEntries()
+        var mutable = entries
+        backfillWallClockIfNeeded(for: &mutable)
+        let loadedEntries = mutable
+
         await MainActor.run {
             configuration = config
             configuration.storageFolder = path
-            applyLoadedEntries(entries)
+            applyLoadedEntries(loadedEntries)
             saveTimesheetForCurrentPeriodIfDue()
             errorMessage = nil
         }
     }
-    
+
     // MARK: - Timer Updates
-    
+
     private func startTimerUpdates() {
         timerCancellable = Timer.publish(every: 1, on: .main, in: .common)
             .autoconnect()
@@ -194,14 +200,40 @@ public final class TimeTrackingViewModel: ObservableObject {
                 self?.objectWillChange.send()
             }
     }
-    
+
     private func stopTimerUpdates() {
         timerCancellable?.cancel()
         timerCancellable = nil
     }
-    
+
+    private func isoLocalWithOffsetString(for date: Date, in timeZone: TimeZone) -> String {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withColonSeparatorInTimeZone]
+        formatter.timeZone = timeZone
+        return formatter.string(from: date)
+    }
+
+    private func backfillWallClockIfNeeded(for entries: inout [TimeEntry]) {
+        let tz = configuration.timezone
+        for i in entries.indices {
+            if entries[i].clockIn == nil {
+                let start = entries[i].startTime
+                entries[i].clockIn = TimeEntry.WallClockEvent(
+                    timestamp: isoLocalWithOffsetString(for: start, in: tz),
+                    timezone: tz.identifier
+                )
+            }
+            if let end = entries[i].endTime, entries[i].clockOut == nil {
+                entries[i].clockOut = TimeEntry.WallClockEvent(
+                    timestamp: isoLocalWithOffsetString(for: end, in: tz),
+                    timezone: tz.identifier
+                )
+            }
+        }
+    }
+
     // MARK: - Periodic File Sync (Cross-Device)
-    
+
     /// Starts periodic polling of storage files to detect changes from other devices.
     /// Call this when the app becomes active or visible.
     public func startPeriodicFileSync() {
@@ -212,63 +244,96 @@ public final class TimeTrackingViewModel: ObservableObject {
                 self?.checkForExternalChanges()
             }
     }
-    
+
     /// Stops periodic file sync polling.
     /// Call this when the app goes to background or is not visible.
     public func stopPeriodicFileSync() {
         fileSyncCancellable?.cancel()
         fileSyncCancellable = nil
     }
-    
+
     /// Checks storage for changes made by other devices and updates state if needed.
     private func checkForExternalChanges() {
         guard storageService.getStorageFolderURL() != nil else { return }
+        // If shared defaults indicate the timer stopped (e.g., via Siri/Intent), finalize our current entry
+        if let defaults = sharedDefaults,
+           currentEntry != nil,
+           defaults.bool(forKey: "isTracking") == false {
+            let captured = defaults.string(forKey: "lastEntryDescription") ?? ""
+            stopClock(description: captured)
+            defaults.removeObject(forKey: "lastEntryDescription")
+            return
+        }
         do {
             let loadedEntries = try storageService.loadTimeEntries()
-            let loadedInProgress = loadedEntries.first { $0.endTime == nil }
-            
+            var mutableLoaded = loadedEntries
+            backfillWallClockIfNeeded(for: &mutableLoaded)
+            let loadedInProgress = mutableLoaded.first { $0.endTime == nil }
+
             // Check if timer state changed externally
             if let current = currentEntry {
                 // We have a timer running - check if it was stopped externally
-                if let loaded = loadedEntries.first(where: { $0.id == current.id }) {
+                if let loaded = mutableLoaded.first(where: { $0.id == current.id }) {
                     if loaded.endTime != nil {
                         // Timer was stopped on another device - update our state
-                        applyLoadedEntries(loadedEntries)
+                        applyLoadedEntries(mutableLoaded)
                     }
                 }
             } else if loadedInProgress != nil {
                 // We don't have a timer but one was started externally
-                applyLoadedEntries(loadedEntries)
+                applyLoadedEntries(mutableLoaded)
             }
-            
+
             // Also check if completed entries changed (e.g., edits from another device)
-            let loadedCompletedCount = loadedEntries.filter { $0.endTime != nil }.count
+            let loadedCompletedCount = mutableLoaded.filter { $0.endTime != nil }.count
             if loadedCompletedCount != allEntries.count {
-                applyLoadedEntries(loadedEntries)
+                applyLoadedEntries(mutableLoaded)
             }
         } catch {
             // Silently ignore sync errors to avoid spamming the user
         }
     }
-    
+
     // MARK: - Actions
-    
+
     private let sharedDefaults = UserDefaults(suiteName: "group.com.localhours.shared")
-    
+
     public func startClock() {
-        guard currentEntry == nil else { return }
-        let entry = TimeEntry(startTime: Date(), description: "")
+        let now = Date()
+        let tz = configuration.timezone
+        let entry = TimeEntry(
+            startTime: now,
+            description: "",
+            clockIn: TimeEntry.WallClockEvent(
+                timestamp: isoLocalWithOffsetString(for: now, in: tz),
+                timezone: tz.identifier
+            )
+        )
         currentEntry = entry
         startTimerUpdates()
         saveEntries()
         syncStateToWidget()
     }
-    
+
     public func stopClock(description: String, projectName: String? = nil) {
         guard var entry = currentEntry else { return }
-        entry.endTime = Date()
-        entry.description = description
+        let now = Date()
+        let tz = configuration.timezone
+        var finalDescription = description
+        if finalDescription.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+           let defaults = sharedDefaults,
+           let captured = defaults.string(forKey: "lastEntryDescription"),
+           !captured.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            finalDescription = captured
+            defaults.removeObject(forKey: "lastEntryDescription")
+        }
+        entry.endTime = now
+        entry.description = finalDescription
         entry.projectName = projectName
+        entry.clockOut = TimeEntry.WallClockEvent(
+            timestamp: isoLocalWithOffsetString(for: now, in: tz),
+            timezone: tz.identifier
+        )
         currentEntry = nil
         stopTimerUpdates()
         allEntries.append(entry)
@@ -276,7 +341,7 @@ public final class TimeTrackingViewModel: ObservableObject {
         saveEntries()
         syncStateToWidget()
     }
-    
+
     public func cancelTracking() {
         currentEntry = nil
         stopTimerUpdates()
@@ -284,7 +349,7 @@ public final class TimeTrackingViewModel: ObservableObject {
         syncStateToWidget()
         objectWillChange.send()
     }
-    
+
     /// Syncs timer state to shared UserDefaults so widgets can read it.
     private func syncStateToWidget() {
         guard let defaults = sharedDefaults else { return }
@@ -312,12 +377,12 @@ public final class TimeTrackingViewModel: ObservableObject {
         WidgetCenter.shared.reloadAllTimelines()
         #endif
     }
-    
+
     public func deleteEntry(_ entry: TimeEntry) {
         allEntries.removeAll { $0.id == entry.id }
         saveEntries()
     }
-    
+
     public func updateEntry(_ entry: TimeEntry) {
         if let index = allEntries.firstIndex(where: { $0.id == entry.id }) {
             allEntries[index] = entry
@@ -325,7 +390,7 @@ public final class TimeTrackingViewModel: ObservableObject {
             saveEntries()
         }
     }
-    
+
     private func saveEntries() {
         guard storageService.getStorageFolderURL() != nil else { return }
         do {
@@ -339,9 +404,9 @@ public final class TimeTrackingViewModel: ObservableObject {
             errorMessage = error.localizedDescription
         }
     }
-    
+
     // MARK: - Configuration
-    
+
     public func updateConfiguration(_ config: AppConfiguration) {
         configuration = config
         guard storageService.getStorageFolderURL() != nil else { return }
@@ -351,9 +416,9 @@ public final class TimeTrackingViewModel: ObservableObject {
             errorMessage = error.localizedDescription
         }
     }
-    
+
     // MARK: - Timesheet
-    
+
     public func generateTimesheet() -> Timesheet {
         let (periodStart, periodEnd) = currentPeriodBounds(now: Date())
         let entries = allEntries.entries(from: periodStart, to: periodEnd)
@@ -364,7 +429,7 @@ public final class TimeTrackingViewModel: ObservableObject {
             status: .draft
         )
     }
-    
+
     /// Current period (start/end) in config timezone for the given date.
     private func currentPeriodBounds(now: Date) -> (Date, Date) {
         var cal = Calendar.current
@@ -384,7 +449,7 @@ public final class TimeTrackingViewModel: ObservableObject {
         }
         return (periodStart, periodEnd)
     }
-    
+
     /// Notification due date/time for a period: latest occurrence of (notification day + time) within [periodStart, periodEnd].
     private func notificationDueDate(periodStart: Date, periodEnd: Date) -> Date? {
         guard let timeComps = configuration.notificationTimeComponents,
@@ -401,7 +466,7 @@ public final class TimeTrackingViewModel: ObservableObject {
         }
         return nil
     }
-    
+
     /// If the notification due time for the current (or previous) period has passed, save that period's timesheet to the timesheets folder as a backup.
     /// Uses a deterministic filename per period so macOS and iOS write the same file and don't both create a backup.
     public func saveTimesheetForCurrentPeriodIfDue() {
@@ -433,19 +498,19 @@ public final class TimeTrackingViewModel: ObservableObject {
         }
         saveIfDue(periodStart: prevStart, periodEnd: prevEnd)
     }
-    
+
     // MARK: - Notifications
-    
+
     public func requestNotificationPermissions() async -> Bool {
         await notificationService.requestAuthorization()
     }
-    
+
     // MARK: - iOS helpers
-    
+
     public func clearError() {
         errorMessage = nil
     }
-    
+
     /// Sync state from app group (e.g. after returning from widget).
     public func syncFromWidget() {
         // First check if widget started a timer we don't know about
@@ -458,6 +523,14 @@ public final class TimeTrackingViewModel: ObservableObject {
             currentEntry = entry
             startTimerUpdates()
             saveEntries()
+        }
+        // If a timer is running locally but shared state says it's stopped, finalize it and capture description
+        if let defaults = sharedDefaults,
+           currentEntry != nil,
+           defaults.bool(forKey: "isTracking") == false {
+            let captured = defaults.string(forKey: "lastEntryDescription") ?? ""
+            stopClock(description: captured)
+            defaults.removeObject(forKey: "lastEntryDescription")
         }
         // Then reload from storage to get any file changes
         loadFromStorageIfAvailable()

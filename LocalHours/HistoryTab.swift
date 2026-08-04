@@ -6,17 +6,17 @@ import SkipUI
 /// History tab showing all time entries
 struct HistoryTab: View {
     @ObservedObject var viewModel: TimeTrackingViewModel
-    
+
     @State private var searchText = ""
     @State private var selectedFilter = HistoryFilter.all
     @State private var selectedEntry: TimeEntry?
-    
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
                 // Filter picker
                 filterPicker
-                
+
                 // Entry list
                 if filteredEntries.isEmpty {
                     emptyState
@@ -31,9 +31,9 @@ struct HistoryTab: View {
             }
         }
     }
-    
+
     // MARK: - Subviews
-    
+
     private var filterPicker: some View {
         Picker("Filter", selection: $selectedFilter) {
             ForEach(HistoryFilter.allCases, id: \.self) { filter in
@@ -43,33 +43,33 @@ struct HistoryTab: View {
         .pickerStyle(.segmented)
         .padding()
     }
-    
+
     private var emptyState: some View {
         VStack(spacing: 16) {
             Spacer()
-            
+
             Image(systemName: "clock")
                 .font(.system(size: 48))
                 .foregroundStyle(.secondary)
-            
+
             Text("No entries found")
                 .font(.headline)
-            
+
             Text(emptyStateMessage)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
-            
+
             Spacer()
         }
     }
-    
+
     private var emptyStateMessage: String {
         if !searchText.isEmpty {
             return "Try a different search term"
         }
-        
+
         switch selectedFilter {
         case .all:
             return "Start tracking time to see your history"
@@ -81,7 +81,7 @@ struct HistoryTab: View {
             return "No entries recorded this month"
         }
     }
-    
+
     private var entryList: some View {
         List {
             // Summary header
@@ -94,9 +94,9 @@ struct HistoryTab: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
-                    
+
                     Spacer()
-                    
+
                     VStack(alignment: .trailing) {
                         Text(String(format: "%.1f hrs", filteredEntries.totalDuration / 3600))
                             .font(.title2.weight(.semibold))
@@ -107,12 +107,12 @@ struct HistoryTab: View {
                 }
                 .padding(.vertical, 8)
             }
-            
+
             // Grouped entries
             ForEach(groupedEntries.keys.sorted().reversed(), id: \.self) { date in
                 Section {
                     ForEach(groupedEntries[date] ?? []) { entry in
-                        HistoryEntryRow(entry: entry)
+                        HistoryEntryRow(entry: entry, viewModel: viewModel)
                             .contentShape(Rectangle())
                             .onTapGesture {
                                 selectedEntry = entry
@@ -138,16 +138,16 @@ struct HistoryTab: View {
         }
         .listStyle(.insetGrouped)
     }
-    
+
     // MARK: - Computed Properties
-    
+
     private var filteredEntries: [TimeEntry] {
         var entries = viewModel.allEntries
-        
+
         // Apply filter
         let calendar = Calendar.current
         let now = Date()
-        
+
         switch selectedFilter {
         case .all:
             break
@@ -162,7 +162,7 @@ struct HistoryTab: View {
                 entries = entries.filter { $0.startTime >= monthStart }
             }
         }
-        
+
         // Apply search
         if !searchText.isEmpty {
             entries = entries.filter { entry in
@@ -170,19 +170,20 @@ struct HistoryTab: View {
                 (entry.projectName?.localizedCaseInsensitiveContains(searchText) ?? false)
             }
         }
-        
+
         return entries
     }
-    
+
     private var groupedEntries: [Date: [TimeEntry]] {
         filteredEntries.groupedByDate()
     }
-    
+
     // MARK: - Helpers
-    
+
     private func formatSectionDate(_ date: Date) -> String {
+        let tz = viewModel.configuration.timezone
         let calendar = Calendar.current
-        
+
         if calendar.isDateInToday(date) {
             return "Today"
         } else if calendar.isDateInYesterday(date) {
@@ -190,10 +191,11 @@ struct HistoryTab: View {
         } else {
             let formatter = DateFormatter()
             formatter.dateStyle = .medium
+            formatter.timeZone = tz
             return formatter.string(from: date)
         }
     }
-    
+
     private func formatDayTotal(_ entries: [TimeEntry]) -> String {
         let total = entries.totalDuration / 3600.0
         return String(format: "%.1f hrs", total)
@@ -207,7 +209,7 @@ enum HistoryFilter: CaseIterable {
     case today
     case thisWeek
     case thisMonth
-    
+
     var displayName: String {
         switch self {
         case .all: return "All"
@@ -222,7 +224,8 @@ enum HistoryFilter: CaseIterable {
 
 struct HistoryEntryRow: View {
     let entry: TimeEntry
-    
+    let viewModel: TimeTrackingViewModel
+
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             // Time indicator
@@ -230,19 +233,19 @@ struct HistoryEntryRow: View {
                 .fill(entry.isActive ? Color.green : Color.blue)
                 .frame(width: 8, height: 8)
                 .padding(.top, 6)
-            
+
             // Content
             VStack(alignment: .leading, spacing: 4) {
                 Text(entry.displayDescription ?? "No description")
                     .font(.body)
                     .foregroundStyle(entry.displayDescription == nil ? .secondary : .primary)
                     .lineLimit(2)
-                
+
                 HStack(spacing: 8) {
                     Text(formatTimeRange())
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    
+
                     if let project = entry.projectName {
                         Text(project)
                             .font(.caption)
@@ -252,7 +255,7 @@ struct HistoryEntryRow: View {
                             .foregroundStyle(.blue)
                             .clipShape(Capsule())
                     }
-                    
+
                     if entry.isActive {
                         Text("In Progress")
                             .font(.caption)
@@ -264,24 +267,33 @@ struct HistoryEntryRow: View {
                     }
                 }
             }
-            
+
             Spacer()
-            
+
             Text(entry.formattedDuration)
                 .font(.subheadline.weight(.medium))
                 .foregroundStyle(.secondary)
         }
         .padding(.vertical, 4)
     }
-    
+
     private func formatTimeRange() -> String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        
-        let start = formatter.string(from: entry.startTime)
-        let end = entry.endTime.map { formatter.string(from: $0) } ?? "now"
-        
-        return "\(start) - \(end)"
+        if let clockIn = entry.clockIn {
+            let start = clockIn.timestamp
+            if let clockOut = entry.clockOut {
+                let end = clockOut.timestamp
+                return "\(start) - \(end)"
+            } else {
+                return "\(start) - now"
+            }
+        } else {
+            let formatter = DateFormatter()
+            formatter.timeStyle = .short
+            formatter.timeZone = TimeZone(identifier: viewModel.configuration.timezoneIdentifier) ?? .current
+            let start = formatter.string(from: entry.startTime)
+            let end = entry.endTime.map { formatter.string(from: $0) } ?? "now"
+            return "\(start) - \(end)"
+        }
     }
 }
 
